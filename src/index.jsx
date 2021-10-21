@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import CaldarApp from './CaldarApp';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <CaldarApp />
   </React.StrictMode>,
   document.getElementById('root')
 );
