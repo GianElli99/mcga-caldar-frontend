@@ -13,12 +13,12 @@ export const MainRouter = () => {
   return (
     <Router>
       <Switch>
-        <Route path="/home">
+        <Route exact path="/home">
           <Layout>
             <HomeScreen />
           </Layout>
         </Route>
-        <Route path="/technicians">
+        <Route exact path="/technicians/:action?/:technicianId?">
           <Layout>
             <TechnicianScreen />
           </Layout>
