@@ -14,12 +14,12 @@ export const MainRouter = () => {
     <Router>
       <Switch>
         <Route path="/home">
-          <Layout title="Home">
+          <Layout>
             <HomeScreen />
           </Layout>
         </Route>
         <Route path="/technicians">
-          <Layout title="Technicians">
+          <Layout>
             <TechnicianScreen />
           </Layout>
         </Route>

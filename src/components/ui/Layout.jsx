@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { Header } from './Header';
 import { NavBar } from './NavBar';
 
-export const Layout = ({ children, title }) => {
+export const Layout = ({ children }) => {
   return (
     <div>
       <NavBar />
       <div>
-        <Header title={title} />
+        <Header title="Caldar" />
         {children}
       </div>
     </div>
@@ -17,5 +17,4 @@ export const Layout = ({ children, title }) => {
 
 Layout.propTypes = {
   children: PropTypes.object.isRequired,
-  title: PropTypes.string.isRequired,
 };
