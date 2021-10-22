@@ -74,6 +74,7 @@ export const TechnicianScreen = () => {
 
   return (
     <div>
+      <h2>Technicians</h2>
       {errors && <p>{errors}</p>}
       {action === 'create' || action === 'update' ? (
         <TechnicianForm

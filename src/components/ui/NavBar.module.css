@@ -1,0 +1,5 @@
+.NavBar {
+  width: 20%;
+  flex-shrink: 0;
+  background-color: #d3e0ea;
+}
