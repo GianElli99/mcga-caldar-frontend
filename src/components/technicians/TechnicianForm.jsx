@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from '../../hooks/useForm';
+import styles from './TechnicianForm.module.css';
 
 const initialState = {
   name: '',
@@ -66,6 +67,7 @@ export const TechnicianForm = ({
         placeholder="Name"
         value={values.name}
         onChange={handleInputChange}
+        autoComplete="off"
       />
       <input
         type="text"
@@ -74,6 +76,7 @@ export const TechnicianForm = ({
         placeholder="Surname"
         value={values.surname}
         onChange={handleInputChange}
+        autoComplete="off"
       />
       <input
         type="text"
@@ -82,6 +85,7 @@ export const TechnicianForm = ({
         placeholder="Phone number"
         value={values.phone}
         onChange={handleInputChange}
+        autoComplete="off"
       />
       <input
         type="text"
@@ -90,6 +94,7 @@ export const TechnicianForm = ({
         placeholder="DNI"
         value={values.dni}
         onChange={handleInputChange}
+        autoComplete="off"
       />
       <input
         type="text"
@@ -98,58 +103,71 @@ export const TechnicianForm = ({
         placeholder="Address"
         value={values.address}
         onChange={handleInputChange}
+        autoComplete="off"
       />
-      <label htmlFor="a">
-        <input
-          type="checkbox"
-          name="a"
-          id="a"
-          value="A"
-          checked={!!specializations.find((x) => x === 'A')}
-          onChange={handleSpecializationChange}
-        />
-        A
-      </label>
-      <label>
-        <input
-          type="checkbox"
-          name="b"
-          id="b"
-          value="B"
-          checked={!!specializations.find((x) => x === 'B')}
-          onChange={handleSpecializationChange}
-        />
-        B
-      </label>
-      <label>
-        <input
-          type="checkbox"
-          name="c"
-          id="c"
-          value="C"
-          checked={!!specializations.find((x) => x === 'C')}
-          onChange={handleSpecializationChange}
-        />
-        C
-      </label>
-      <label>
-        <input
-          type="checkbox"
-          name="d"
-          id="d"
-          value="D"
-          checked={!!specializations.find((x) => x === 'D')}
-          onChange={handleSpecializationChange}
-        />
-        D
-      </label>
-
-      <button type="submit" onClick={handleSubmit}>
-        {mode} Technician
-      </button>
-      <button type="button" onClick={handleCancel}>
-        Cancel
-      </button>
+      <span>Specializations</span>
+      <div className={styles.specializationsContainter}>
+        <label htmlFor="a">
+          A
+          <input
+            type="checkbox"
+            name="a"
+            id="a"
+            value="A"
+            checked={!!specializations.find((x) => x === 'A')}
+            onChange={handleSpecializationChange}
+          />
+        </label>
+        <label>
+          B
+          <input
+            type="checkbox"
+            name="b"
+            id="b"
+            value="B"
+            checked={!!specializations.find((x) => x === 'B')}
+            onChange={handleSpecializationChange}
+          />
+        </label>
+        <label>
+          C
+          <input
+            type="checkbox"
+            name="c"
+            id="c"
+            value="C"
+            checked={!!specializations.find((x) => x === 'C')}
+            onChange={handleSpecializationChange}
+          />
+        </label>
+        <label>
+          D
+          <input
+            type="checkbox"
+            name="d"
+            id="d"
+            value="D"
+            checked={!!specializations.find((x) => x === 'D')}
+            onChange={handleSpecializationChange}
+          />
+        </label>
+      </div>
+      <div className={styles.actionsContainer}>
+        <button
+          className={styles.btnAccept}
+          type="submit"
+          onClick={handleSubmit}
+        >
+          {mode.toUpperCase()}
+        </button>
+        <button
+          className={styles.btnCancel}
+          type="button"
+          onClick={handleCancel}
+        >
+          Cancel
+        </button>
+      </div>
     </form>
   );
 };
