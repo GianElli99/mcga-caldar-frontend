@@ -3,6 +3,7 @@ import { TechnicianList } from './TechnicianList';
 import techniciansData from '../../mocks/technicians.json';
 import { TechnicianForm } from './TechnicianForm';
 import { useParams, useHistory } from 'react-router';
+import styles from './TechnicianScreen.module.css';
 import { v4 as uuidv4 } from 'uuid';
 
 export const TechnicianScreen = () => {
@@ -85,7 +86,9 @@ export const TechnicianScreen = () => {
         />
       ) : (
         <>
-          <button onClick={handleAddClick}>New Technician</button>
+          <button className={styles.newButton} onClick={handleAddClick}>
+            New Technician
+          </button>
           <TechnicianList
             technicians={technicians}
             onDelete={deleteTechnician}
