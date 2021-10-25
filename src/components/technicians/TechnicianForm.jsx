@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import { useForm } from '../../hooks/useForm';
 import styles from './TechnicianForm.module.css';
+import { useHistory, useParams } from 'react-router';
+import {
+  addTechnician,
+  modifyTechnician,
+  getTechnician,
+} from '../../store/technicians';
 
 const initialState = {
   name: '',
@@ -11,23 +16,29 @@ const initialState = {
   address: '',
 };
 
-export const TechnicianForm = ({
-  onSubmit,
-  onCancel,
-  mode,
-  technicianToModify,
-}) => {
-  const [values, handleInputChange, resetValues, setAllValues] =
-    useForm(initialState);
+export const TechnicianForm = () => {
+  const [values, handleInputChange, , setAllValues] = useForm(initialState);
   const [specializations, setSpecializations] = useState([]);
+  const history = useHistory();
+  const { action, technicianId } = useParams();
 
   useEffect(() => {
-    if (mode === 'update' && technicianToModify) {
-      setAllValues(technicianToModify);
-      setSpecializations(technicianToModify.specializations);
+    if (action !== 'update' && action !== 'create') {
+      history.replace('/technicians');
+      return;
+    }
+
+    if (action === 'update') {
+      const technicianToModify = getTechnician(technicianId);
+      if (technicianToModify) {
+        setAllValues(technicianToModify);
+        setSpecializations(technicianToModify.specializations);
+      } else {
+        history.replace('/technicians');
+      }
     }
     return () => {};
-  }, [technicianToModify]);
+  }, []);
 
   const handleSpecializationChange = ({ target }) => {
     if (target.checked && specializations.indexOf(target.value) === -1) {
@@ -39,7 +50,7 @@ export const TechnicianForm = ({
     }
   };
   const handleCancel = () => {
-    onCancel();
+    history.push('/technicians');
   };
 
   const handleSubmit = (e) => {
@@ -54,9 +65,12 @@ export const TechnicianForm = ({
     ) {
       return;
     }
-    onSubmit({ ...values, specializations });
-    resetValues();
-    setSpecializations([]);
+    if (action === 'update') {
+      modifyTechnician({ ...values, specializations, id: technicianId });
+    } else {
+      addTechnician({ ...values, specializations });
+    }
+    history.push('/technicians');
   };
   return (
     <form action="">
@@ -158,7 +172,7 @@ export const TechnicianForm = ({
           type="submit"
           onClick={handleSubmit}
         >
-          {mode.toUpperCase()}
+          {action.toUpperCase()}
         </button>
         <button
           className={styles.btnCancel}
@@ -170,11 +184,4 @@ export const TechnicianForm = ({
       </div>
     </form>
   );
-};
-
-TechnicianForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  onCancel: PropTypes.func.isRequired,
-  mode: PropTypes.string.isRequired,
-  technicianToModify: PropTypes.object,
 };
