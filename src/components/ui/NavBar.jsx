@@ -6,10 +6,16 @@ export const NavBar = () => {
   return (
     <nav className={styles.NavBar}>
       <ul>
-        <NavLink to="/home">Home</NavLink>
-      </ul>
-      <ul>
-        <NavLink to="/technicians">Technicians</NavLink>
+        <li>
+          <NavLink to="/home" className={styles.link}>
+            Home
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/technicians" className={styles.link}>
+            Technicians
+          </NavLink>
+        </li>
       </ul>
     </nav>
   );
