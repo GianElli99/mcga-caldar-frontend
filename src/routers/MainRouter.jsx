@@ -6,25 +6,27 @@ import {
   Redirect,
 } from 'react-router-dom';
 import { HomeScreen } from '../components/home/HomeScreen';
+import { TechnicianForm } from '../components/technicians/TechnicianForm';
 import { TechnicianScreen } from '../components/technicians/TechnicianScreen';
 import { Layout } from '../components/ui/Layout';
 
 export const MainRouter = () => {
   return (
     <Router>
-      <Switch>
-        <Route path="/home">
-          <Layout>
+      <Layout>
+        <Switch>
+          <Route exact path="/home">
             <HomeScreen />
-          </Layout>
-        </Route>
-        <Route path="/technicians">
-          <Layout>
+          </Route>
+          <Route exact path="/technicians">
             <TechnicianScreen />
-          </Layout>
-        </Route>
-        <Redirect to="/home" />
-      </Switch>
+          </Route>
+          <Route exact path="/technicians/:action/:technicianId?">
+            <TechnicianForm />
+          </Route>
+          <Redirect to="/home" />
+        </Switch>
+      </Layout>
     </Router>
   );
 };

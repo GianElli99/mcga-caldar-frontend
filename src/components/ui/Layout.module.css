@@ -1,0 +1,9 @@
+.mainWrapper {
+  display: flex;
+  align-items: stretch;
+  min-height: 100vh;
+}
+.content {
+  flex-grow: 1;
+  padding: 2rem;
+}
