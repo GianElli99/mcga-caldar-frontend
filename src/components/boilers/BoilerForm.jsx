@@ -3,6 +3,7 @@ import { useForm } from '../../hooks/useForm';
 import styles from './BoilerForm.module.css';
 import { useHistory, useParams } from 'react-router';
 import { addBoiler, modifyBoiler, getBoiler } from '../../store/boilers';
+import { getBuildings } from '../../store/buildings';
 
 const initialState = {
   type: '',
@@ -101,15 +102,23 @@ export const BoilerForm = () => {
         onChange={handleInputChange}
         autoComplete="off"
       />
-      <input
-        type="text"
+      <label htmlFor="buildingId">Building</label>
+      <select
+        onChange={handleInputChange}
+        value={values.buildingId}
         name="buildingId"
         id="buildingId"
-        placeholder="buildingId"
-        value={values.buildingId}
-        onChange={handleInputChange}
-        autoComplete="off"
-      />
+      >
+        <option value="" selected disabled hidden></option>
+
+        {getBuildings().map((x) => {
+          return (
+            <option key={x.id} value={x.id}>
+              {x.name}
+            </option>
+          );
+        })}
+      </select>
       <div className={styles.actionsContainer}>
         <button
           className={styles.btnAccept}
