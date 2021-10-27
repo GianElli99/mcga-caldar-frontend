@@ -8,8 +8,10 @@ import {
 import { BoilerForm } from '../components/boilers/BoilerForm';
 import { BoilerScreen } from '../components/boilers/BoilerScreen';
 import { TechnicianForm } from '../components/technicians/TechnicianForm';
+import { BuildingForm } from '../components/buildings/BuildingForm';
 import { TechnicianScreen } from '../components/technicians/TechnicianScreen';
 import { HomeScreen } from '../components/home/HomeScreen';
+import { BuildingScreen } from '../components/buildings/BuildingScreen';
 import { Layout } from '../components/ui/Layout';
 
 export const MainRouter = () => {
@@ -31,6 +33,12 @@ export const MainRouter = () => {
           </Route>
           <Route exact path="/boilers/:action/:boilerId?">
             <BoilerForm />
+          </Route>
+          <Route exact path="/buildings">
+            <BuildingScreen />
+          </Route>
+          <Route exact path="/buildings/:action/:buildingId?">
+            <BuildingForm />
           </Route>
           <Redirect to="/home" />
         </Switch>
