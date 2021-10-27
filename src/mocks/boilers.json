@@ -1,0 +1,30 @@
+[
+  {
+    "id": "614b72a5714d318447f1149b",
+    "type": "A",
+    "isInstalled": true,
+    "maintenanceTimeMinutes": 180,
+    "buildingId": "347165814"
+  },
+  {
+    "id": "614b72a5714d368447f1149b",
+    "type": "C",
+    "isInstalled": false,
+    "maintenanceTimeMinutes": 180,
+    "buildingId": "347165814"
+  },
+  {
+    "id": "614b72a5714d313447f1149b",
+    "type": "A",
+    "isInstalled": true,
+    "maintenanceTimeMinutes": 180,
+    "buildingId": "347165814"
+  },
+  {
+    "id": "614b72a5714d418447f1149b",
+    "type": "B",
+    "isInstalled": false,
+    "maintenanceTimeMinutes": 180,
+    "buildingId": "347165814"
+  }
+]

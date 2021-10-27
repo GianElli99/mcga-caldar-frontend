@@ -16,6 +16,11 @@ export const NavBar = () => {
             Technicians
           </NavLink>
         </li>
+        <li>
+          <NavLink to="/boilers" className={styles.link}>
+            Boilers
+          </NavLink>
+        </li>
       </ul>
     </nav>
   );

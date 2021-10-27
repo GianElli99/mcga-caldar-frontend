@@ -5,9 +5,11 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
-import { HomeScreen } from '../components/home/HomeScreen';
+import { BoilerForm } from '../components/boilers/BoilerForm';
+import { BoilerScreen } from '../components/boilers/BoilerScreen';
 import { TechnicianForm } from '../components/technicians/TechnicianForm';
 import { TechnicianScreen } from '../components/technicians/TechnicianScreen';
+import { HomeScreen } from '../components/home/HomeScreen';
 import { Layout } from '../components/ui/Layout';
 
 export const MainRouter = () => {
@@ -23,6 +25,12 @@ export const MainRouter = () => {
           </Route>
           <Route exact path="/technicians/:action/:technicianId?">
             <TechnicianForm />
+          </Route>
+          <Route exact path="/boilers">
+            <BoilerScreen />
+          </Route>
+          <Route exact path="/boilers/:action/:boilerId?">
+            <BoilerForm />
           </Route>
           <Redirect to="/home" />
         </Switch>
