@@ -129,7 +129,7 @@ export const BuildingForm = () => {
         name="constructionCompanyId"
         id="constructionCompanyId"
         placeholder="Construction Company ID"
-        disabled={!isParticular}
+        disabled={isParticular}
         value={values.constructionCompanyId}
         onChange={handleInputChange}
         autoComplete="off"

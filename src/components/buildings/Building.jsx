@@ -9,7 +9,7 @@ export const Building = ({ building, onDelete, onModify }) => {
   return (
     <div className={styles.container}>
       <div className={styles.column}>
-        <span className={styles.title}>direction</span>
+        <span className={styles.title}>Direction</span>
         <span className={styles.content}>{direction}</span>
       </div>
       <div className={styles.column}>
