@@ -6,7 +6,7 @@ import { addBoiler, modifyBoiler, getBoiler } from '../../store/boilers';
 
 const initialState = {
   type: '',
-  isIstalled: '',
+  isIstalled: false,
   maintenanceTimeMinutes: '',
   buildingId: '',
 };
@@ -42,11 +42,14 @@ export const BoilerForm = () => {
 
     if (
       values.type.length === 0 ||
-      values.isIstalled.length === 0 ||
-      values.maintenanceTimeMinutes.length === 0 ||
-      values.buildingId.length === 0
+      values.maintenanceTimeMinutes.length === 0
     ) {
       return;
+    }
+    if (values.isIstalled === true) {
+      if (values.buildingId.length === 0) {
+        return;
+      }
     }
     if (action === 'update') {
       modifyBoiler({ ...values, id: boilerId });
@@ -57,15 +60,29 @@ export const BoilerForm = () => {
   };
   return (
     <form action="">
-      <input
-        type="text"
-        name="type"
-        id="type"
-        placeholder="Boiler type"
-        value={values.type}
-        onChange={handleInputChange}
-        autoComplete="off"
-      />
+      <div>
+        <span>Type</span>
+        <label htmlFor="typeA">
+          A
+          <input
+            type="radio"
+            name="type"
+            id="typeA"
+            value="A"
+            onChange={handleInputChange}
+          />
+        </label>
+        <label htmlFor="typeB">
+          B
+          <input
+            type="radio"
+            name="type"
+            id="typeB"
+            value="B"
+            onChange={handleInputChange}
+          />
+        </label>
+      </div>
       <div>
         <span>Is installed?</span>
         <input

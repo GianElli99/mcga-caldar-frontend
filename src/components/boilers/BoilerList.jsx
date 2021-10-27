@@ -5,7 +5,7 @@ import { Boiler } from './Boiler';
 export const BoilerList = ({ boilers, onDelete, onModify }) => {
   return boilers.map((boiler) => (
     <Boiler
-      key={boilers.id}
+      key={boiler.id}
       boiler={boiler}
       onDelete={onDelete}
       onModify={onModify}
