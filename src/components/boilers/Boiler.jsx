@@ -17,14 +17,14 @@ export const Boiler = ({ boiler, onDelete, onModify }) => {
         <span className={styles.content}>{isInstalled.toString()}</span>
       </div>
       <div className={styles.column}>
+        <span className={styles.title}>Building</span>
+        <span className={styles.content}>{buildingId}</span>
+      </div>
+      <div className={styles.column}>
         <span className={styles.title}>Maintenance</span>
         <span className={styles.content}>
           {maintenanceTimeMinutes + ' Min'}
         </span>
-      </div>
-      <div className={styles.column}>
-        <span className={styles.title}>Building</span>
-        <span className={styles.content}>{buildingId}</span>
       </div>
       <div className={styles.actions}>
         <EditIcon className={styles.editIcon} onClick={() => onModify(id)} />

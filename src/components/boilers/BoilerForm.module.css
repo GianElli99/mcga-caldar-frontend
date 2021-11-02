@@ -1,11 +1,34 @@
+.containerLabels {
+  display: flex;
+  flex-direction: column;
+}
 .typesBoilers {
   display: flex;
   align-items: center;
   justify-content: left;
 }
 .typesBoilers label {
-  width: 0%;
-  margin: 10px;
+  width: 2rem;
+  margin: 10px 5px 10px 0;
+}
+.containerInstalled {
+  display: flex;
+  flex-direction: column;
+}
+.containerInstalled input {
+  margin: 10px 5px 10px 0;
+}
+.containerBuilding {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+.containerBuilding label {
+  margin: 0 1rem 0 0;
+}
+.containerBuilding select {
+  width: 100%;
+  max-width: 525px;
 }
 .btnAccept {
   display: inline-block;

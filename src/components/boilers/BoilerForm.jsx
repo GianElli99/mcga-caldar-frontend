@@ -63,7 +63,7 @@ export const BoilerForm = () => {
   return (
     <form action="">
       <span>Boiler type</span>
-      <div className="typesBoilers">
+      <div className={styles.typesBoilers}>
         <label htmlFor="typeA">
           A
           <input
@@ -105,7 +105,7 @@ export const BoilerForm = () => {
           />
         </label>
       </div>
-      <div>
+      <div className={styles.containerInstalled}>
         <span>Is installed?</span>
         <input
           type="checkbox"
@@ -117,6 +117,26 @@ export const BoilerForm = () => {
           }}
         />
       </div>
+      <div className={styles.containerBuilding}>
+        <label htmlFor="buildingId">Building</label>
+        <select
+          onChange={handleInputChange}
+          value={values.buildingId}
+          disabled={!isInstalled}
+          name="buildingId"
+          id="buildingId"
+        >
+          <option value="" disabled hidden></option>
+
+          {getBuildings().map((x) => {
+            return (
+              <option key={x.id} value={x.id}>
+                {x.name}
+              </option>
+            );
+          })}
+        </select>
+      </div>
       <input
         type="text"
         name="maintenanceTimeMinutes"
@@ -126,24 +146,6 @@ export const BoilerForm = () => {
         onChange={handleInputChange}
         autoComplete="off"
       />
-      <label htmlFor="buildingId">Building</label>
-      <select
-        onChange={handleInputChange}
-        value={values.buildingId}
-        disabled={!isInstalled}
-        name="buildingId"
-        id="buildingId"
-      >
-        <option value="" disabled hidden></option>
-
-        {getBuildings().map((x) => {
-          return (
-            <option key={x.id} value={x.id}>
-              {x.name}
-            </option>
-          );
-        })}
-      </select>
       <div className={styles.actionsContainer}>
         <button
           className={styles.btnAccept}
