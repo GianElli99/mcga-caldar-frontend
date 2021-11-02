@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from '../../hooks/useForm';
 import styles from './TechnicianForm.module.css';
 import { useHistory, useParams } from 'react-router';
+import { useSelector } from 'react-redux';
 import {
-  addTechnician,
-  modifyTechnician,
-  getTechnician,
-} from '../../store/technicians';
+  updateTechnician,
+  createTechnician,
+} from '../../redux/actions/techniciansActions';
+import { useDispatch } from 'react-redux';
 
 const initialState = {
   name: '',
@@ -20,7 +21,11 @@ export const TechnicianForm = () => {
   const [values, handleInputChange, , setAllValues] = useForm(initialState);
   const [specializations, setSpecializations] = useState([]);
   const history = useHistory();
+  const dispatch = useDispatch();
   const { action, technicianId } = useParams();
+  const technicianToModify = useSelector((state) =>
+    state.technicians.list.find((tec) => tec.id === technicianId)
+  );
 
   useEffect(() => {
     if (action !== 'update' && action !== 'create') {
@@ -29,7 +34,6 @@ export const TechnicianForm = () => {
     }
 
     if (action === 'update') {
-      const technicianToModify = getTechnician(technicianId);
       if (technicianToModify) {
         setAllValues(technicianToModify);
         setSpecializations(technicianToModify.specializations);
@@ -66,9 +70,11 @@ export const TechnicianForm = () => {
       return;
     }
     if (action === 'update') {
-      modifyTechnician({ ...values, specializations, id: technicianId });
+      dispatch(
+        updateTechnician({ ...values, specializations, id: technicianId })
+      );
     } else {
-      addTechnician({ ...values, specializations });
+      dispatch(createTechnician({ ...values, specializations }));
     }
     history.push('/technicians');
   };
