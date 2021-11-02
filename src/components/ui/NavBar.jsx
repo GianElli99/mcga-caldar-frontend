@@ -17,6 +17,11 @@ export const NavBar = () => {
           </NavLink>
         </li>
         <li>
+          <NavLink to="/boilers" className={styles.link}>
+            Boilers
+          </NavLink>
+        </li>
+        <li>
           <NavLink to="/buildings" className={styles.link}>
             Buildings
           </NavLink>
