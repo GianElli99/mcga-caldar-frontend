@@ -44,7 +44,7 @@ export const techniciansReducer = (state = initialState, action) => {
     case DELETE_TECHNICIAN:
       return {
         ...state,
-        list: state.list.map((tec) => tec.id !== action.payload.id),
+        list: state.list.filter((tec) => tec.id !== action.payload),
       };
 
     default:
