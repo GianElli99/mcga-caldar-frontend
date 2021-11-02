@@ -7,7 +7,6 @@ import { getBuildings } from '../../store/buildings';
 
 const initialState = {
   type: '',
-  isIstalled: false,
   maintenanceTimeMinutes: '',
   buildingId: '',
 };
@@ -28,6 +27,7 @@ export const BoilerForm = () => {
       const boilerToModify = getBoiler(boilerId);
       if (boilerToModify) {
         setAllValues(boilerToModify);
+        setIsInstalled(boilerToModify.isInstalled);
       } else {
         history.replace('/boilers');
       }
@@ -53,13 +53,23 @@ export const BoilerForm = () => {
         return;
       }
     }
+
     if (action === 'update') {
       modifyBoiler({ ...values, isInstalled, id: boilerId });
     } else {
       addBoiler({ ...values, isInstalled });
     }
+
     history.push('/boilers');
   };
+
+  const handleIsInstalledToggle = (isInstalled) => {
+    if (isInstalled === false) {
+      setAllValues({ ...values, buildingId: '' });
+    }
+    setIsInstalled(isInstalled);
+  };
+
   return (
     <form action="">
       <span>Boiler type</span>
@@ -71,6 +81,7 @@ export const BoilerForm = () => {
             name="type"
             id="typeA"
             value="A"
+            checked={values.type === 'A'}
             onChange={handleInputChange}
           />
         </label>
@@ -113,7 +124,7 @@ export const BoilerForm = () => {
           id="isInstalled"
           checked={isInstalled}
           onChange={(e) => {
-            setIsInstalled(e.currentTarget.checked);
+            handleIsInstalledToggle(e.currentTarget.checked);
           }}
         />
       </div>

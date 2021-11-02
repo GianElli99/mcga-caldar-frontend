@@ -4,27 +4,27 @@
     "type": "A",
     "isInstalled": true,
     "maintenanceTimeMinutes": 180,
-    "buildingId": "347165814"
+    "buildingId": "5"
   },
   {
     "id": "614b72a5714d368447f1149b",
     "type": "C",
     "isInstalled": false,
     "maintenanceTimeMinutes": 180,
-    "buildingId": "347165814"
+    "buildingId": ""
   },
   {
     "id": "614b72a5714d313447f1149b",
     "type": "A",
     "isInstalled": true,
     "maintenanceTimeMinutes": 180,
-    "buildingId": "347165814"
+    "buildingId": "3"
   },
   {
     "id": "614b72a5714d418417f1149b",
     "type": "B",
     "isInstalled": false,
     "maintenanceTimeMinutes": 180,
-    "buildingId": "347165814"
+    "buildingId": ""
   }
 ]
