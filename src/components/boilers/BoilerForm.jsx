@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from '../../hooks/useForm';
 import styles from './BoilerForm.module.css';
 import { useHistory, useParams } from 'react-router';
@@ -14,6 +14,7 @@ const initialState = {
 
 export const BoilerForm = () => {
   const [values, handleInputChange, , setAllValues] = useForm(initialState);
+  const [isInstalled, setIsInstalled] = useState(false);
   const history = useHistory();
   const { action, boilerId } = useParams();
 
@@ -53,16 +54,16 @@ export const BoilerForm = () => {
       }
     }
     if (action === 'update') {
-      modifyBoiler({ ...values, id: boilerId });
+      modifyBoiler({ ...values, isInstalled, id: boilerId });
     } else {
-      addBoiler({ ...values });
+      addBoiler({ ...values, isInstalled });
     }
     history.push('/boilers');
   };
   return (
     <form action="">
-      <div>
-        <span>Type</span>
+      <span>Boiler type</span>
+      <div className="typesBoilers">
         <label htmlFor="typeA">
           A
           <input
@@ -83,6 +84,26 @@ export const BoilerForm = () => {
             onChange={handleInputChange}
           />
         </label>
+        <label htmlFor="typeC">
+          C
+          <input
+            type="radio"
+            name="type"
+            id="typeC"
+            value="C"
+            onChange={handleInputChange}
+          />
+        </label>
+        <label htmlFor="typeD">
+          D
+          <input
+            type="radio"
+            name="type"
+            id="typeD"
+            value="D"
+            onChange={handleInputChange}
+          />
+        </label>
       </div>
       <div>
         <span>Is installed?</span>
@@ -90,7 +111,10 @@ export const BoilerForm = () => {
           type="checkbox"
           name="isInstalled"
           id="isInstalled"
-          onChange={handleInputChange}
+          checked={isInstalled}
+          onChange={(e) => {
+            setIsInstalled(e.currentTarget.checked);
+          }}
         />
       </div>
       <input
@@ -106,10 +130,11 @@ export const BoilerForm = () => {
       <select
         onChange={handleInputChange}
         value={values.buildingId}
+        disabled={!isInstalled}
         name="buildingId"
         id="buildingId"
       >
-        <option value="" selected disabled hidden></option>
+        <option value="" disabled hidden></option>
 
         {getBuildings().map((x) => {
           return (

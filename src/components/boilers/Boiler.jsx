@@ -14,14 +14,16 @@ export const Boiler = ({ boiler, onDelete, onModify }) => {
       </div>
       <div className={styles.column}>
         <span className={styles.title}>Is Installed?</span>
-        <span className={styles.content}>{isInstalled}</span>
+        <span className={styles.content}>{isInstalled.toString()}</span>
       </div>
       <div className={styles.column}>
-        <span className={styles.title}>Maintenance Time Minutes</span>
-        <span className={styles.content}>{maintenanceTimeMinutes}</span>
+        <span className={styles.title}>Maintenance</span>
+        <span className={styles.content}>
+          {maintenanceTimeMinutes + ' Min'}
+        </span>
       </div>
       <div className={styles.column}>
-        <span className={styles.title}>BuildingId</span>
+        <span className={styles.title}>Building</span>
         <span className={styles.content}>{buildingId}</span>
       </div>
       <div className={styles.actions}>
