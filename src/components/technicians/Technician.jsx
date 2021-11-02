@@ -3,9 +3,12 @@ import PropTypes from 'prop-types';
 import { FaTimes as DeleteIcon } from 'react-icons/fa';
 import { MdEdit as EditIcon } from 'react-icons/md';
 import styles from './Technician.module.css';
+import { useDispatch } from 'react-redux';
+import { deleteTechnician } from '../../redux/actions/techniciansActions';
 
-export const Technician = ({ technician, onDelete, onModify }) => {
+export const Technician = ({ technician, onModify }) => {
   const { id, name, surname, phone, specializations } = technician;
+  const dispatch = useDispatch();
   return (
     <div className={styles.container}>
       <div className={styles.column}>
@@ -24,7 +27,7 @@ export const Technician = ({ technician, onDelete, onModify }) => {
         <EditIcon className={styles.editIcon} onClick={() => onModify(id)} />
         <DeleteIcon
           className={styles.deleteIcon}
-          onClick={() => onDelete(id)}
+          onClick={() => dispatch(deleteTechnician(id))}
         />
       </div>
     </div>
@@ -33,6 +36,5 @@ export const Technician = ({ technician, onDelete, onModify }) => {
 
 Technician.propTypes = {
   technician: PropTypes.object.isRequired,
-  onDelete: PropTypes.func.isRequired,
   onModify: PropTypes.func.isRequired,
 };
