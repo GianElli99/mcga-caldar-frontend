@@ -1,0 +1,3 @@
+export const CREATE_BOILER = 'CREATE_BOILER';
+export const UPDATE_BOILER = 'UPDATE_BOILER';
+export const DELETE_BOILER = 'DELETE_BOILER';

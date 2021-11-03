@@ -4,9 +4,12 @@ import { FaTimes as DeleteIcon } from 'react-icons/fa';
 import { MdEdit as EditIcon } from 'react-icons/md';
 import styles from './Boiler.module.css';
 import { getBuilding } from '../../store/buildings';
+import { useDispatch } from 'react-redux';
+import { deleteBoiler } from '../../redux/actions/boilersActions';
 
-export const Boiler = ({ boiler, onDelete, onModify }) => {
+export const Boiler = ({ boiler, onModify }) => {
   const { id, type, isInstalled, maintenanceTimeMinutes, buildingId } = boiler;
+  const dispatch = useDispatch();
   const building = getBuilding(buildingId);
   return (
     <div className={styles.container}>
@@ -34,7 +37,7 @@ export const Boiler = ({ boiler, onDelete, onModify }) => {
         <EditIcon className={styles.editIcon} onClick={() => onModify(id)} />
         <DeleteIcon
           className={styles.deleteIcon}
-          onClick={() => onDelete(id)}
+          onClick={() => dispatch(deleteBoiler(id))}
         />
       </div>
     </div>
@@ -43,6 +46,5 @@ export const Boiler = ({ boiler, onDelete, onModify }) => {
 
 Boiler.propTypes = {
   boiler: PropTypes.object.isRequired,
-  onDelete: PropTypes.func.isRequired,
   onModify: PropTypes.func.isRequired,
 };
