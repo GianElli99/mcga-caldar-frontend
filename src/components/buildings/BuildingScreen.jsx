@@ -1,21 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BuildingList } from './BuildingList';
 import styles from './BuildingScreen.module.css';
-import { getBuildings, deleteBuilding } from '../../store/buildings';
 import { useHistory } from 'react-router';
+import { useSelector } from 'react-redux';
 
 export const BuildingScreen = () => {
   const history = useHistory();
-  const [buildings, setBuildings] = useState(getBuildings());
+  const buildings = useSelector((state) => state.buildings.list);
 
   const handleAddClick = () => {
     history.push('buildings/create');
   };
 
-  const handleDeleteBuilding = (id) => {
-    deleteBuilding(id);
-    setBuildings(getBuildings());
-  };
   const handleModifyBuilding = (id) => {
     history.push(`/buildings/update/${id}`);
   };
@@ -26,11 +22,7 @@ export const BuildingScreen = () => {
       <button className={styles.newButton} onClick={handleAddClick}>
         New Building
       </button>
-      <BuildingList
-        buildings={buildings}
-        onDelete={handleDeleteBuilding}
-        onModify={handleModifyBuilding}
-      />
+      <BuildingList buildings={buildings} onModify={handleModifyBuilding} />
     </div>
   );
 };
