@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from '../../hooks/useForm';
 import styles from './BuildingForm.module.css';
 import { useHistory, useParams } from 'react-router';
+import { useSelector } from 'react-redux';
 import {
-  addBuilding,
-  modifyBuilding,
-  getBuilding,
-} from '../../store/buildings';
+  updateBuilding,
+  createBuilding,
+} from '../../redux/actions/buildingsAction';
+import { useDispatch } from 'react-redux';
 
 const initialState = {
   direction: '',
@@ -21,7 +22,11 @@ export const BuildingForm = () => {
   const [values, handleInputChange, , setAllValues] = useForm(initialState);
   const [isParticular, setParticular] = useState(false);
   const history = useHistory();
+  const dispatch = useDispatch();
   const { action, buildingId } = useParams();
+  const buildingToModify = useSelector((state) =>
+    state.buildings.list.find((build) => build.id === buildingId)
+  );
 
   useEffect(() => {
     if (action !== 'update' && action !== 'create') {
@@ -30,7 +35,6 @@ export const BuildingForm = () => {
     }
 
     if (action === 'update') {
-      const buildingToModify = getBuilding(buildingId);
       if (buildingToModify) {
         setAllValues(buildingToModify);
         setParticular(buildingToModify.isParticular);
@@ -64,9 +68,9 @@ export const BuildingForm = () => {
     }
 
     if (action === 'update') {
-      modifyBuilding({ ...values, isParticular, id: buildingId });
+      dispatch(updateBuilding({ ...values, isParticular, id: buildingId }));
     } else {
-      addBuilding({ ...values, isParticular });
+      dispatch(createBuilding({ ...values, isParticular }));
     }
     history.push('/buildings');
   };

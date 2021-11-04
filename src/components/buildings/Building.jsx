@@ -3,9 +3,12 @@ import PropTypes from 'prop-types';
 import { FaTimes as DeleteIcon } from 'react-icons/fa';
 import { MdEdit as EditIcon } from 'react-icons/md';
 import styles from './Building.module.css';
+import { useDispatch } from 'react-redux';
+import { deleteBuilding } from '../../redux/actions/buildingsAction';
 
-export const Building = ({ building, onDelete, onModify }) => {
+export const Building = ({ building, onModify }) => {
   const { id, direction, city, postalCode } = building;
+  const dispatch = useDispatch();
   return (
     <div className={styles.container}>
       <div className={styles.column}>
@@ -24,7 +27,7 @@ export const Building = ({ building, onDelete, onModify }) => {
         <EditIcon className={styles.editIcon} onClick={() => onModify(id)} />
         <DeleteIcon
           className={styles.deleteIcon}
-          onClick={() => onDelete(id)}
+          onClick={() => dispatch(deleteBuilding(id))}
         />
       </div>
     </div>
@@ -33,6 +36,5 @@ export const Building = ({ building, onDelete, onModify }) => {
 
 Building.propTypes = {
   building: PropTypes.object.isRequired,
-  onDelete: PropTypes.func.isRequired,
   onModify: PropTypes.func.isRequired,
 };
