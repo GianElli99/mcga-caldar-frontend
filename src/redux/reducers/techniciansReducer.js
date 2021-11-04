@@ -2,29 +2,11 @@ import {
   CREATE_TECHNICIAN,
   UPDATE_TECHNICIAN,
   DELETE_TECHNICIAN,
+  SET_ALL_TECHNICIANS,
 } from '../types/techniciansTypes';
 
 const initialState = {
-  list: [
-    {
-      id: '614b72a5714d318447f1149b',
-      name: 'Gian',
-      surname: 'Elli',
-      specializations: ['A', 'B'],
-      phone: '347165814',
-      dni: '4456999',
-      address: 'Lisandro de la Torre 778',
-    },
-    {
-      id: '614b72a5714d318447f1149c',
-      name: 'Gian',
-      surname: 'Elli',
-      specializations: ['A', 'B'],
-      phone: '347165814',
-      dni: '4456999',
-      address: 'Lisandro de la Torre 778',
-    },
-  ],
+  list: [],
 };
 
 export const techniciansReducer = (state = initialState, action) => {
@@ -46,6 +28,8 @@ export const techniciansReducer = (state = initialState, action) => {
         ...state,
         list: state.list.filter((tec) => tec.id !== action.payload),
       };
+    case SET_ALL_TECHNICIANS:
+      return { ...state, list: action.payload };
 
     default:
       return state;
