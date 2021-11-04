@@ -3,14 +3,16 @@ import PropTypes from 'prop-types';
 import { FaTimes as DeleteIcon } from 'react-icons/fa';
 import { MdEdit as EditIcon } from 'react-icons/md';
 import styles from './Boiler.module.css';
-import { getBuilding } from '../../store/buildings';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteBoiler } from '../../redux/actions/boilersActions';
 
 export const Boiler = ({ boiler, onModify }) => {
   const { id, type, isInstalled, maintenanceTimeMinutes, buildingId } = boiler;
   const dispatch = useDispatch();
-  const building = getBuilding(buildingId);
+
+  const building = useSelector((state) =>
+    state.buildings.list.find((x) => x.id === buildingId)
+  );
   return (
     <div className={styles.container}>
       <div className={styles.column}>
@@ -23,9 +25,7 @@ export const Boiler = ({ boiler, onModify }) => {
       </div>
       <div className={styles.column}>
         <span className={styles.title}>Building</span>
-        <span className={styles.content}>
-          {building ? building.name : 'No Installed'}
-        </span>
+        <span className={styles.content}>{building ? building.name : ' '}</span>
       </div>
       <div className={styles.column}>
         <span className={styles.title}>Maintenance</span>

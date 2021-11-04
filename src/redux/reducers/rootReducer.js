@@ -8,7 +8,3 @@ export const rootReducer = combineReducers({
   boilers: boilersReducer,
   buildings: buildingsReducer,
 });
-
-// export const rootReducer = combineReducers({
-//   technicians: techniciansReducer,
-// });

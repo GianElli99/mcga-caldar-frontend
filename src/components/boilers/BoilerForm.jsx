@@ -5,7 +5,6 @@ import { useHistory, useParams } from 'react-router';
 import { useSelector } from 'react-redux';
 import { updateBoiler, createBoiler } from '../../redux/actions/boilersActions';
 import { useDispatch } from 'react-redux';
-import { getBuildings } from '../../store/buildings';
 
 const initialState = {
   type: '',
@@ -23,6 +22,7 @@ export const BoilerForm = () => {
     state.boilers.list.find((boil) => boil.id === boilerId)
   );
 
+  const buildings = useSelector((state) => state.buildings.list);
   useEffect(() => {
     if (action !== 'update' && action !== 'create') {
       history.replace('/boilers');
@@ -60,7 +60,7 @@ export const BoilerForm = () => {
     }
 
     if (action === 'update') {
-      updateBoiler({ ...values, isInstalled, id: boilerId });
+      dispatch(updateBoiler({ ...values, isInstalled, id: boilerId }));
     } else {
       dispatch(createBoiler({ ...values, isInstalled }));
     }
@@ -144,7 +144,7 @@ export const BoilerForm = () => {
         >
           <option value="" disabled hidden></option>
 
-          {getBuildings().map((x) => {
+          {buildings.map((x) => {
             return (
               <option key={x.id} value={x.id}>
                 {x.name}
