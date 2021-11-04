@@ -3,7 +3,7 @@ import { useForm } from '../../hooks/useForm';
 import styles from './BoilerForm.module.css';
 import { useHistory, useParams } from 'react-router';
 import { useSelector } from 'react-redux';
-import { updateboiler, createBoiler } from '../../redux/actions/boilersActions';
+import { updateBoiler, createBoiler } from '../../redux/actions/boilersActions';
 import { useDispatch } from 'react-redux';
 import { getBuildings } from '../../store/buildings';
 
@@ -60,7 +60,7 @@ export const BoilerForm = () => {
     }
 
     if (action === 'update') {
-      updateboiler({ ...values, isInstalled, id: boilerId });
+      updateBoiler({ ...values, isInstalled, id: boilerId });
     } else {
       dispatch(createBoiler({ ...values, isInstalled }));
     }

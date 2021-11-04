@@ -12,7 +12,7 @@ export const createBoiler = (boiler) => {
     payload: boiler,
   };
 };
-export const updateboiler = (boiler) => {
+export const updateBoiler = (boiler) => {
   return {
     type: UPDATE_BOILER,
     payload: boiler,
