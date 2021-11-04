@@ -1,21 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BoilerList } from './BoilerList';
 import styles from './BoilerScreen.module.css';
-import { getBoilers, deleteBoiler } from '../../store/boilers';
 import { useHistory } from 'react-router';
+import { useSelector } from 'react-redux';
 
 export const BoilerScreen = () => {
   const history = useHistory();
-  const [boilers, setBoilers] = useState(getBoilers());
+  const boilers = useSelector((state) => state.boilers.list);
 
   const handleAddClick = () => {
     history.push('boilers/create');
   };
 
-  const handleDeleteBoiler = (id) => {
-    deleteBoiler(id);
-    setBoilers(getBoilers());
-  };
   const handleModifyBoiler = (id) => {
     history.push(`/boilers/update/${id}`);
   };
@@ -26,11 +22,7 @@ export const BoilerScreen = () => {
       <button className={styles.newButton} onClick={handleAddClick}>
         New Boiler
       </button>
-      <BoilerList
-        boilers={boilers}
-        onDelete={handleDeleteBoiler}
-        onModify={handleModifyBoiler}
-      />
+      <BoilerList boilers={boilers} onModify={handleModifyBoiler} />
     </div>
   );
 };
