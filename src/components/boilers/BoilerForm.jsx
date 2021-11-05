@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from '../../hooks/useForm';
 import styles from './BoilerForm.module.css';
 import { useHistory, useParams } from 'react-router';
-import { addBoiler, modifyBoiler, getBoiler } from '../../store/boilers';
-import { getBuildings } from '../../store/buildings';
+import { useSelector } from 'react-redux';
+import { updateBoiler, createBoiler } from '../../redux/actions/boilersActions';
+import { useDispatch } from 'react-redux';
 
 const initialState = {
   type: '',
@@ -15,8 +16,13 @@ export const BoilerForm = () => {
   const [values, handleInputChange, , setAllValues] = useForm(initialState);
   const [isInstalled, setIsInstalled] = useState(false);
   const history = useHistory();
+  const dispatch = useDispatch();
   const { action, boilerId } = useParams();
+  const boilerToModify = useSelector((state) =>
+    state.boilers.list.find((boil) => boil.id === boilerId)
+  );
 
+  const buildings = useSelector((state) => state.buildings.list);
   useEffect(() => {
     if (action !== 'update' && action !== 'create') {
       history.replace('/boilers');
@@ -24,7 +30,6 @@ export const BoilerForm = () => {
     }
 
     if (action === 'update') {
-      const boilerToModify = getBoiler(boilerId);
       if (boilerToModify) {
         setAllValues(boilerToModify);
         setIsInstalled(boilerToModify.isInstalled);
@@ -55,9 +60,9 @@ export const BoilerForm = () => {
     }
 
     if (action === 'update') {
-      modifyBoiler({ ...values, isInstalled, id: boilerId });
+      dispatch(updateBoiler({ ...values, isInstalled, id: boilerId }));
     } else {
-      addBoiler({ ...values, isInstalled });
+      dispatch(createBoiler({ ...values, isInstalled }));
     }
 
     history.push('/boilers');
@@ -139,7 +144,7 @@ export const BoilerForm = () => {
         >
           <option value="" disabled hidden></option>
 
-          {getBuildings().map((x) => {
+          {buildings.map((x) => {
             return (
               <option key={x.id} value={x.id}>
                 {x.name}

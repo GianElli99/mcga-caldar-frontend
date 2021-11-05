@@ -7,7 +7,7 @@ import {
 const initialState = {
   list: [
     {
-      id: '3',
+      id: '23432423556578',
       direction: '5637 Eagle Crest Point',
       city: 'Neklyudovo',
       name: 'Mississippi Buttercup',
@@ -16,7 +16,7 @@ const initialState = {
       constructionCompanyId: '3',
     },
     {
-      id: '4',
+      id: '23432423556564',
       direction: '9425 Warrior Pass',
       city: 'Heydərabad',
       name: 'Corkbark Fir',
@@ -46,7 +46,6 @@ export const buildingsReducer = (state = initialState, action) => {
         ...state,
         list: state.list.filter((build) => build.id !== action.payload),
       };
-
     default:
       return state;
   }
