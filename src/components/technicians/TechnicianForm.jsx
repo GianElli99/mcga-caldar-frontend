@@ -4,8 +4,8 @@ import styles from './TechnicianForm.module.css';
 import { useHistory, useParams } from 'react-router';
 import { useSelector } from 'react-redux';
 import {
-  updateTechnician,
-  createTechnician,
+  updateTechnicianAsync,
+  createTechnicianAsync,
 } from '../../redux/actions/techniciansActions';
 import { useDispatch } from 'react-redux';
 
@@ -71,10 +71,10 @@ export const TechnicianForm = () => {
     }
     if (action === 'update') {
       dispatch(
-        updateTechnician({ ...values, specializations, id: technicianId })
+        updateTechnicianAsync({ ...values, specializations, id: technicianId })
       );
     } else {
-      dispatch(createTechnician({ ...values, specializations }));
+      dispatch(createTechnicianAsync({ ...values, specializations }));
     }
     history.push('/technicians');
   };

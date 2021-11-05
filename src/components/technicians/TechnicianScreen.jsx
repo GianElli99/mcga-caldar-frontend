@@ -6,7 +6,9 @@ import { useSelector } from 'react-redux';
 
 export const TechnicianScreen = () => {
   const history = useHistory();
-  const technicians = useSelector((state) => state.technicians.list);
+  const { list: technicians, error } = useSelector(
+    (state) => state.technicians
+  );
 
   const handleAddClick = () => {
     history.push('technicians/create');
@@ -22,6 +24,7 @@ export const TechnicianScreen = () => {
       <button className={styles.newButton} onClick={handleAddClick}>
         New Technician
       </button>
+      <p>{error}</p>
       <TechnicianList
         technicians={technicians}
         onModify={handleModifyTechnician}
