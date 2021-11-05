@@ -32,11 +32,12 @@ export const setAllTechnicians = (technicians) => {
     payload: technicians,
   };
 };
-export const readTechnicians = (technicians) => async (dispatch) => {
+export const readTechnicians = () => async (dispatch) => {
   try {
-    const res = await axios.get('https://jsonplaceholder.typicode.com/posts');
+    const res = await axios.get('http://localhost/tecnicos');
+    console.log(res);
     if (res.status < 400) {
-      dispatch(setAllTechnicians(technicians));
+      dispatch(setAllTechnicians([]));
       return Promise.resolve(res.data);
     }
     return Promise.reject(res.data);
