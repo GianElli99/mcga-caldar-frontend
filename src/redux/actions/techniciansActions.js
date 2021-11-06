@@ -5,6 +5,7 @@ import {
   DELETE_TECHNICIAN,
   SET_ALL_TECHNICIANS,
   SET_ERROR,
+  SET_LOADING_TRUE,
 } from '../types/techniciansTypes';
 
 export const createTechnician = (technician) => {
@@ -37,7 +38,13 @@ export const setError = (error) => {
     payload: error,
   };
 };
+export const setLoadingTrue = () => {
+  return {
+    type: SET_LOADING_TRUE,
+  };
+};
 export const getTechniciansAsync = () => async (dispatch) => {
+  dispatch(setLoadingTrue());
   try {
     const res = await axios.get('http://localhost:8090/tecnicos');
     if (res.status === 200) {
@@ -47,11 +54,12 @@ export const getTechniciansAsync = () => async (dispatch) => {
       }
       dispatch(setTechnicians(technicians));
     }
-  } catch {
-    return;
+  } catch (error) {
+    dispatch(setError(error?.response?.data?.error));
   }
 };
 export const deleteTechniciansAsync = (technicianId) => async (dispatch) => {
+  dispatch(setLoadingTrue());
   try {
     const res = await axios.delete(
       `http://localhost:8090/tecnicos/${technicianId}`
@@ -60,10 +68,11 @@ export const deleteTechniciansAsync = (technicianId) => async (dispatch) => {
       dispatch(deleteTechnician(technicianId));
     }
   } catch (error) {
-    dispatch(setError(error.response.data.error));
+    dispatch(setError(error?.response?.data?.error));
   }
 };
 export const createTechnicianAsync = (technician) => async (dispatch) => {
+  dispatch(setLoadingTrue());
   try {
     const espTechnician = technicianMapperToSpanish(technician);
     const res = await axios.post(
@@ -71,13 +80,14 @@ export const createTechnicianAsync = (technician) => async (dispatch) => {
       espTechnician
     );
     if (res.status === 201) {
-      dispatch(createTechnician(technicianMapperToEnglish(res.data)));
+      return dispatch(createTechnician(technicianMapperToEnglish(res.data)));
     }
   } catch (error) {
-    dispatch(setError(error.response.data.error));
+    return dispatch(setError(error?.response?.data?.error));
   }
 };
 export const updateTechnicianAsync = (technician) => async (dispatch) => {
+  dispatch(setLoadingTrue());
   try {
     const espTechnician = technicianMapperToSpanish(technician);
     const res = await axios.put(
@@ -85,10 +95,10 @@ export const updateTechnicianAsync = (technician) => async (dispatch) => {
       espTechnician
     );
     if (res.status === 200) {
-      dispatch(updateTechnician(technicianMapperToEnglish(res.data)));
+      return dispatch(updateTechnician(technicianMapperToEnglish(res.data)));
     }
   } catch (error) {
-    dispatch(setError(error.response.data.error));
+    return dispatch(setError(error?.response?.data?.error));
   }
 };
 const technicianMapperToEnglish = (spanishTech) => {

@@ -4,11 +4,13 @@ import {
   DELETE_TECHNICIAN,
   SET_ALL_TECHNICIANS,
   SET_ERROR,
+  SET_LOADING_TRUE,
 } from '../types/techniciansTypes';
 
 const initialState = {
   list: [],
   error: '',
+  isLoading: false,
 };
 
 export const techniciansReducer = (state = initialState, action) => {
@@ -18,6 +20,7 @@ export const techniciansReducer = (state = initialState, action) => {
         ...state,
         error: '',
         list: [...state.list, action.payload],
+        isLoading: false,
       };
     case UPDATE_TECHNICIAN:
       return {
@@ -26,19 +29,27 @@ export const techniciansReducer = (state = initialState, action) => {
         list: state.list.map((tec) =>
           tec.id === action.payload.id ? action.payload : tec
         ),
+        isLoading: false,
       };
     case DELETE_TECHNICIAN:
       return {
         ...state,
         error: '',
         list: state.list.filter((tec) => tec.id !== action.payload),
+        isLoading: false,
       };
     case SET_ALL_TECHNICIANS:
-      return { ...state, list: action.payload, error: '' };
+      return { ...state, list: action.payload, error: '', isLoading: false };
     case SET_ERROR:
       return {
         ...state,
-        error: action.payload,
+        error: action.payload || 'An error ocurred',
+        isLoading: false,
+      };
+    case SET_LOADING_TRUE:
+      return {
+        ...state,
+        isLoading: true,
       };
 
     default:
