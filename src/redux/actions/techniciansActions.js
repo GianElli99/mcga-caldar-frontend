@@ -62,7 +62,8 @@ export const deleteTechniciansAsync = (technicianId) => async (dispatch) => {
   dispatch(setLoadingTrue());
   try {
     const res = await axios.delete(
-      `http://localhost:8090/tecnicos/${technicianId}`
+      // eslint-disable-next-line no-undef
+      `${process.env.REACT_APP_BACKEND_URL_PORT}/tecnicos/${technicianId}`
     );
     if (res.status === 200) {
       dispatch(deleteTechnician(technicianId));
@@ -76,7 +77,8 @@ export const createTechnicianAsync = (technician) => async (dispatch) => {
   try {
     const espTechnician = technicianMapperToSpanish(technician);
     const res = await axios.post(
-      `http://localhost:8090/tecnicos`,
+      // eslint-disable-next-line no-undef
+      `${process.env.REACT_APP_BACKEND_URL_PORT}/tecnicos`,
       espTechnician
     );
     if (res.status === 201) {
@@ -91,7 +93,8 @@ export const updateTechnicianAsync = (technician) => async (dispatch) => {
   try {
     const espTechnician = technicianMapperToSpanish(technician);
     const res = await axios.put(
-      `http://localhost:8090/tecnicos/${technician.id}`,
+      // eslint-disable-next-line no-undef
+      `${process.env.REACT_APP_BACKEND_URL_PORT}/tecnicos/${technician.id}`,
       espTechnician
     );
     if (res.status === 200) {
