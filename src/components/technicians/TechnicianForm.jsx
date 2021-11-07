@@ -4,10 +4,11 @@ import styles from './TechnicianForm.module.css';
 import { useHistory, useParams } from 'react-router';
 import { useSelector } from 'react-redux';
 import {
-  updateTechnician,
-  createTechnician,
+  updateTechnicianAsync,
+  createTechnicianAsync,
 } from '../../redux/actions/techniciansActions';
 import { useDispatch } from 'react-redux';
+import Button from '@mui/lab/LoadingButton';
 
 const initialState = {
   name: '',
@@ -26,6 +27,7 @@ export const TechnicianForm = () => {
   const technicianToModify = useSelector((state) =>
     state.technicians.list.find((tec) => tec.id === technicianId)
   );
+  const isLoading = useSelector((state) => state.technicians.isLoading);
 
   useEffect(() => {
     if (action !== 'update' && action !== 'create') {
@@ -57,7 +59,7 @@ export const TechnicianForm = () => {
     history.push('/technicians');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (
@@ -70,11 +72,15 @@ export const TechnicianForm = () => {
       return;
     }
     if (action === 'update') {
-      dispatch(
-        updateTechnician({ ...values, specializations, id: technicianId })
+      await dispatch(
+        updateTechnicianAsync({
+          ...values,
+          specializations,
+          id: technicianId,
+        })
       );
     } else {
-      dispatch(createTechnician({ ...values, specializations }));
+      await dispatch(createTechnicianAsync({ ...values, specializations }));
     }
     history.push('/technicians');
   };
@@ -173,20 +179,19 @@ export const TechnicianForm = () => {
         </label>
       </div>
       <div className={styles.actionsContainer}>
-        <button
-          className={styles.btnAccept}
+        <Button
+          color="primary"
+          variant="contained"
+          disableRipple
           type="submit"
+          loading={isLoading}
           onClick={handleSubmit}
         >
           {action.toUpperCase()}
-        </button>
-        <button
-          className={styles.btnCancel}
-          type="button"
-          onClick={handleCancel}
-        >
+        </Button>
+        <Button variant="outlined" type="button" onClick={handleCancel}>
           Cancel
-        </button>
+        </Button>
       </div>
     </form>
   );

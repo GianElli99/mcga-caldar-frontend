@@ -4,7 +4,7 @@ import { FaTimes as DeleteIcon } from 'react-icons/fa';
 import { MdEdit as EditIcon } from 'react-icons/md';
 import styles from './Technician.module.css';
 import { useDispatch } from 'react-redux';
-import { deleteTechnician } from '../../redux/actions/techniciansActions';
+import { deleteTechniciansAsync } from '../../redux/actions/techniciansActions';
 
 export const Technician = ({ technician, onModify }) => {
   const { id, name, surname, phone, specializations } = technician;
@@ -27,7 +27,7 @@ export const Technician = ({ technician, onModify }) => {
         <EditIcon className={styles.editIcon} onClick={() => onModify(id)} />
         <DeleteIcon
           className={styles.deleteIcon}
-          onClick={() => dispatch(deleteTechnician(id))}
+          onClick={() => dispatch(deleteTechniciansAsync(id))}
         />
       </div>
     </div>
