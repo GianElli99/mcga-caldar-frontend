@@ -89,6 +89,22 @@ export const createBoilerAsync = (boiler) => async (dispatch) => {
     return dispatch(setError(error?.response?.data?.error));
   }
 };
+export const updateBoilerAsync = (bolier) => async (dispatch) => {
+  dispatch(setLoadingTrue());
+  try {
+    const espBoiler = boilerMapperToSpanish(bolier);
+    const res = await axios.put(
+      // eslint-disable-next-line no-undef
+      `${process.env.REACT_APP_BACKEND_URL_PORT}/calderas/${bolier.id}`,
+      espBoiler
+    );
+    if (res.status === 200) {
+      return dispatch(updateBoiler(boilerMMapperToEnglish(res.data)));
+    }
+  } catch (error) {
+    return dispatch(setError(error?.response?.data?.error));
+  }
+};
 
 const boilerMMapperToEnglish = (spanishBoil) => {
   return {

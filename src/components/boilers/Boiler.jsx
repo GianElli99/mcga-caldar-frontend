@@ -4,7 +4,7 @@ import { FaTimes as DeleteIcon } from 'react-icons/fa';
 import { MdEdit as EditIcon } from 'react-icons/md';
 import styles from './Boiler.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteBoiler } from '../../redux/actions/boilersActions';
+import { deleteBoilerAsync } from '../../redux/actions/boilersActions';
 
 export const Boiler = ({ boiler, onModify }) => {
   const { id, type, isInstalled, maintenanceTimeMinutes, buildingId } = boiler;
@@ -37,7 +37,7 @@ export const Boiler = ({ boiler, onModify }) => {
         <EditIcon className={styles.editIcon} onClick={() => onModify(id)} />
         <DeleteIcon
           className={styles.deleteIcon}
-          onClick={() => dispatch(deleteBoiler(id))}
+          onClick={() => dispatch(deleteBoilerAsync(id))}
         />
       </div>
     </div>
