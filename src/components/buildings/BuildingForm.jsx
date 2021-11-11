@@ -4,29 +4,30 @@ import styles from './BuildingForm.module.css';
 import { useHistory, useParams } from 'react-router';
 import { useSelector } from 'react-redux';
 import {
-  updateBuilding,
-  createBuilding,
+  updateBuildingAsync,
+  createBuildingAsync,
 } from '../../redux/actions/buildingsAction';
 import { useDispatch } from 'react-redux';
+import Button from '@mui/lab/LoadingButton';
 
 const initialState = {
   direction: '',
   city: '',
   name: '',
   postalCode: '',
-  isParticular: false,
   constructionCompanyId: '',
 };
 
 export const BuildingForm = () => {
   const [values, handleInputChange, , setAllValues] = useForm(initialState);
-  const [isParticular, setParticular] = useState(false);
+  const [isParticular, setParticular] = useState([]);
   const history = useHistory();
   const dispatch = useDispatch();
   const { action, buildingId } = useParams();
   const buildingToModify = useSelector((state) =>
     state.buildings.list.find((build) => build.id === buildingId)
   );
+  const isLoading = useSelector((state) => state.buildings.isLoading);
 
   useEffect(() => {
     if (action !== 'update' && action !== 'create') {
@@ -49,7 +50,7 @@ export const BuildingForm = () => {
     history.push('/buildings');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (
@@ -68,9 +69,15 @@ export const BuildingForm = () => {
     }
 
     if (action === 'update') {
-      dispatch(updateBuilding({ ...values, isParticular, id: buildingId }));
+      await dispatch(
+        updateBuildingAsync({
+          ...values,
+          isParticular,
+          id: buildingId,
+        })
+      );
     } else {
-      dispatch(createBuilding({ ...values, isParticular }));
+      await dispatch(createBuildingAsync({ ...values, isParticular }));
     }
     history.push('/buildings');
   };
@@ -140,20 +147,19 @@ export const BuildingForm = () => {
       />
 
       <div className={styles.actionsContainer}>
-        <button
-          className={styles.btnAccept}
+        <Button
+          color="primary"
+          variant="contained"
+          disableRipple
           type="submit"
+          loading={isLoading}
           onClick={handleSubmit}
         >
           {action.toUpperCase()}
-        </button>
-        <button
-          className={styles.btnCancel}
-          type="button"
-          onClick={handleCancel}
-        >
+        </Button>
+        <Button variant="outlined" type="button" onClick={handleCancel}>
           Cancel
-        </button>
+        </Button>
       </div>
     </form>
   );

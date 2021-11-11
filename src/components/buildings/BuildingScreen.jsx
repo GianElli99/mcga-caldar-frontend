@@ -3,10 +3,12 @@ import { BuildingList } from './BuildingList';
 import styles from './BuildingScreen.module.css';
 import { useHistory } from 'react-router';
 import { useSelector } from 'react-redux';
+import LinearProgress from '@mui/material/LinearProgress';
 
 export const BuildingScreen = () => {
   const history = useHistory();
-  const buildings = useSelector((state) => state.buildings.list);
+  const { list: buildings, error } = useSelector((state) => state.buildings);
+  const isLoading = useSelector((state) => state.buildings.isLoading);
 
   const handleAddClick = () => {
     history.push('buildings/create');
@@ -22,6 +24,12 @@ export const BuildingScreen = () => {
       <button className={styles.newButton} onClick={handleAddClick}>
         New Building
       </button>
+      {isLoading && (
+        <div className={styles.loadingBar}>
+          <LinearProgress />
+        </div>
+      )}
+      <p>{error}</p>
       <BuildingList buildings={buildings} onModify={handleModifyBuilding} />
     </div>
   );

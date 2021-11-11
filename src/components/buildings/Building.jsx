@@ -4,7 +4,7 @@ import { FaTimes as DeleteIcon } from 'react-icons/fa';
 import { MdEdit as EditIcon } from 'react-icons/md';
 import styles from './Building.module.css';
 import { useDispatch } from 'react-redux';
-import { deleteBuilding } from '../../redux/actions/buildingsAction';
+import { deleteBuildingsAsync } from '../../redux/actions/buildingsAction';
 
 export const Building = ({ building, onModify }) => {
   const { id, direction, city, postalCode } = building;
@@ -27,7 +27,7 @@ export const Building = ({ building, onModify }) => {
         <EditIcon className={styles.editIcon} onClick={() => onModify(id)} />
         <DeleteIcon
           className={styles.deleteIcon}
-          onClick={() => dispatch(deleteBuilding(id))}
+          onClick={() => dispatch(deleteBuildingsAsync(id))}
         />
       </div>
     </div>
