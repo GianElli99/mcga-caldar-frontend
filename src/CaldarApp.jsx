@@ -9,10 +9,6 @@ function CaldarApp() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getTechniciansAsync());
-    return () => {};
-  }, []);
-
-  useEffect(() => {
     dispatch(getBoilersAsync());
     return () => {};
   }, []);

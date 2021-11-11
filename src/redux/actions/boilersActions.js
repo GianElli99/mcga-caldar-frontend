@@ -47,7 +47,10 @@ export const setLoadingTrue = () => {
 export const getBoilersAsync = () => async (dispatch) => {
   dispatch(setLoadingTrue());
   try {
-    const res = await axios.get('http://localhost:8090/calderas');
+    const res = await axios.get(
+      // eslint-disable-next-line no-undef
+      `${process.env.REACT_APP_BACKEND_URL_PORT}/calderas`
+    );
     if (res.status === 200) {
       let boilers = [];
       for (let i = 0; i < res.data.length; i++) {

@@ -15,11 +15,11 @@ const initialState = {
   maintenanceTimeMinutes: '',
   buildingId: '',
 };
-const isLoading = useSelector((state) => state.boilers.isLoading);
 
 export const BoilerForm = () => {
   const [values, handleInputChange, , setAllValues] = useForm(initialState);
   const [isInstalled, setIsInstalled] = useState(false);
+  const isLoading = useSelector((state) => state.boilers.isLoading);
   const history = useHistory();
   const dispatch = useDispatch();
   const { action, boilerId } = useParams();

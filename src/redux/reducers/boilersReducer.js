@@ -53,5 +53,6 @@ export const boilersReducer = (state = initialState, action) => {
       };
 
     default:
+      return state;
   }
 };
