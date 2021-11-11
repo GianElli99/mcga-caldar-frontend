@@ -7,8 +7,11 @@ import LinearProgress from '@mui/material/LinearProgress';
 
 export const BoilerScreen = () => {
   const history = useHistory();
-  const { list: boilers, error } = useSelector((state) => state.boilers);
-  const isLoading = useSelector((state) => state.boilers.isLoading);
+  const {
+    list: boilers,
+    error,
+    isLoading,
+  } = useSelector((state) => state.boilers);
 
   const handleAddClick = () => {
     history.push('boilers/create');
