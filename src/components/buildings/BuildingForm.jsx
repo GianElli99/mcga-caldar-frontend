@@ -20,7 +20,7 @@ const initialState = {
 
 export const BuildingForm = () => {
   const [values, handleInputChange, , setAllValues] = useForm(initialState);
-  const [isParticular, setParticular] = useState([]);
+  const [isParticular, setParticular] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
   const { action, buildingId } = useParams();
