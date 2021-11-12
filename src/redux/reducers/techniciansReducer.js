@@ -5,12 +5,17 @@ import {
   TECH_SET_ALL_TECHNICIANS,
   TECH_SET_ERROR,
   TECH_SET_LOADING_TRUE,
+  TECH_SET_CREATE_ACTION,
+  TECH_SET_UPDATE_ACTION,
+  TECH_SET_DELETE_ACTION,
 } from '../types/techniciansTypes';
+import { UPDATE, DELETE, CREATE } from '../types/modalTypes';
 
 const initialState = {
   list: [],
   error: '',
   isLoading: false,
+  actionInProgress: 'none',
 };
 
 export const techniciansReducer = (state = initialState, action) => {
@@ -50,6 +55,21 @@ export const techniciansReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: true,
+      };
+    case TECH_SET_CREATE_ACTION:
+      return {
+        ...state,
+        actionInProgress: CREATE,
+      };
+    case TECH_SET_UPDATE_ACTION:
+      return {
+        ...state,
+        actionInProgress: UPDATE,
+      };
+    case TECH_SET_DELETE_ACTION:
+      return {
+        ...state,
+        actionInProgress: DELETE,
       };
 
     default:
