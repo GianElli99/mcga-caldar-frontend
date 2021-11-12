@@ -61,7 +61,11 @@ export const BuildingForm = () => {
     ) {
       return;
     }
-    if (isParticular === true && values.constructionCompanyId?.length === 0) {
+    if (
+      isParticular === true &&
+      values.constructionCompanyId &&
+      values.constructionCompanyId.length === 0
+    ) {
       return;
     }
 
@@ -78,7 +82,6 @@ export const BuildingForm = () => {
     }
     history.push('/buildings');
   };
-  console.log(values);
   return (
     <form action="">
       <input
