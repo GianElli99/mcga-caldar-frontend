@@ -1,5 +1,10 @@
 import React from 'react';
+import { GenericModal } from '../shared/GenericModal';
 
 export const HomeScreen = () => {
-  return <div>Home</div>;
+  return (
+    <div>
+      <GenericModal></GenericModal>
+    </div>
+  );
 };
