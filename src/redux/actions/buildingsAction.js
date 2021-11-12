@@ -1,46 +1,46 @@
 import axios from 'axios';
 import {
-  CREATE_BUILDINGS,
-  UPDATE_BUILDINGS,
-  DELETE_BUILDINGS,
-  SET_ALL_BUILDINGS,
-  SET_ERROR,
-  SET_LOADING_TRUE,
+  BUILD_CREATE_BUILDING,
+  BUILD_UPDATE_BUILDING,
+  BUILD_DELETE_BUILDING,
+  BUILD_SET_ALL_BUILDINGS,
+  BUILD_SET_ERROR,
+  BUILD_SET_LOADING_TRUE,
 } from '../types/buildingsTypes';
 
 export const createBuilding = (building) => {
   return {
-    type: CREATE_BUILDINGS,
+    type: BUILD_CREATE_BUILDING,
     payload: building,
   };
 };
 export const updateBuilding = (building) => {
   return {
-    type: UPDATE_BUILDINGS,
+    type: BUILD_UPDATE_BUILDING,
     payload: building,
   };
 };
 export const deleteBuilding = (buildingId) => {
   return {
-    type: DELETE_BUILDINGS,
+    type: BUILD_DELETE_BUILDING,
     payload: buildingId,
   };
 };
 export const setBuildings = (buildings) => {
   return {
-    type: SET_ALL_BUILDINGS,
+    type: BUILD_SET_ALL_BUILDINGS,
     payload: buildings,
   };
 };
 export const setError = (error) => {
   return {
-    type: SET_ERROR,
+    type: BUILD_SET_ERROR,
     payload: error,
   };
 };
 export const setLoadingTrue = () => {
   return {
-    type: SET_LOADING_TRUE,
+    type: BUILD_SET_LOADING_TRUE,
   };
 };
 export const getBuildingsAsync = () => async (dispatch) => {
@@ -95,12 +95,15 @@ export const updateBuildingAsync = (building) => async (dispatch) => {
   dispatch(setLoadingTrue());
   try {
     const espBuilding = buildingMapperToSpanish(building);
+    console.log(`espBuilding`, espBuilding);
     const res = await axios.put(
       // eslint-disable-next-line no-undef
       `${process.env.REACT_APP_BACKEND_URL_PORT}/edificios/${building.id}`,
       espBuilding
     );
     if (res.status === 200) {
+      console.log(`res.data`, res.data);
+      console.log(buildingMapperToEnglish(res.data));
       return dispatch(updateBuilding(buildingMapperToEnglish(res.data)));
     }
   } catch (error) {

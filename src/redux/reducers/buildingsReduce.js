@@ -1,10 +1,10 @@
 import {
-  CREATE_BUILDINGS,
-  UPDATE_BUILDINGS,
-  DELETE_BUILDINGS,
-  SET_ALL_BUILDINGS,
-  SET_ERROR,
-  SET_LOADING_TRUE,
+  BUILD_CREATE_BUILDING,
+  BUILD_UPDATE_BUILDING,
+  BUILD_DELETE_BUILDING,
+  BUILD_SET_ALL_BUILDINGS,
+  BUILD_SET_ERROR,
+  BUILD_SET_LOADING_TRUE,
 } from '../types/buildingsTypes';
 
 const initialState = {
@@ -15,14 +15,14 @@ const initialState = {
 
 export const buildingsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case CREATE_BUILDINGS:
+    case BUILD_CREATE_BUILDING:
       return {
         ...state,
         error: '',
         list: [...state.list, action.payload],
         isLoading: false,
       };
-    case UPDATE_BUILDINGS:
+    case BUILD_UPDATE_BUILDING:
       return {
         ...state,
         error: '',
@@ -31,22 +31,22 @@ export const buildingsReducer = (state = initialState, action) => {
         ),
         isLoading: false,
       };
-    case DELETE_BUILDINGS:
+    case BUILD_DELETE_BUILDING:
       return {
         ...state,
         error: '',
         list: state.list.filter((build) => build.id !== action.payload),
         isLoading: false,
       };
-    case SET_ALL_BUILDINGS:
+    case BUILD_SET_ALL_BUILDINGS:
       return { ...state, list: action.payload, error: '', isLoading: false };
-    case SET_ERROR:
+    case BUILD_SET_ERROR:
       return {
         ...state,
         error: action.payload || 'An error ocurred',
         isLoading: false,
       };
-    case SET_LOADING_TRUE:
+    case BUILD_SET_LOADING_TRUE:
       return {
         ...state,
         isLoading: true,

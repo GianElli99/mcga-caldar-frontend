@@ -1,10 +1,10 @@
 import {
-  CREATE_TECHNICIAN,
-  UPDATE_TECHNICIAN,
-  DELETE_TECHNICIAN,
-  SET_ALL_TECHNICIANS,
-  SET_ERROR,
-  SET_LOADING_TRUE,
+  TECH_CREATE_TECHNICIAN,
+  TECH_UPDATE_TECHNICIAN,
+  TECH_DELETE_TECHNICIAN,
+  TECH_SET_ALL_TECHNICIANS,
+  TECH_SET_ERROR,
+  TECH_SET_LOADING_TRUE,
 } from '../types/techniciansTypes';
 
 const initialState = {
@@ -15,14 +15,14 @@ const initialState = {
 
 export const techniciansReducer = (state = initialState, action) => {
   switch (action.type) {
-    case CREATE_TECHNICIAN:
+    case TECH_CREATE_TECHNICIAN:
       return {
         ...state,
         error: '',
         list: [...state.list, action.payload],
         isLoading: false,
       };
-    case UPDATE_TECHNICIAN:
+    case TECH_UPDATE_TECHNICIAN:
       return {
         ...state,
         error: '',
@@ -31,22 +31,22 @@ export const techniciansReducer = (state = initialState, action) => {
         ),
         isLoading: false,
       };
-    case DELETE_TECHNICIAN:
+    case TECH_DELETE_TECHNICIAN:
       return {
         ...state,
         error: '',
         list: state.list.filter((tec) => tec.id !== action.payload),
         isLoading: false,
       };
-    case SET_ALL_TECHNICIANS:
+    case TECH_SET_ALL_TECHNICIANS:
       return { ...state, list: action.payload, error: '', isLoading: false };
-    case SET_ERROR:
+    case TECH_SET_ERROR:
       return {
         ...state,
         error: action.payload || 'An error ocurred',
         isLoading: false,
       };
-    case SET_LOADING_TRUE:
+    case TECH_SET_LOADING_TRUE:
       return {
         ...state,
         isLoading: true,

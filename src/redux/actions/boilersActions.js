@@ -1,46 +1,46 @@
 import axios from 'axios';
 import {
-  CREATE_BOILER,
-  UPDATE_BOILER,
-  DELETE_BOILER,
-  SET_ALL_BOILERS,
-  SET_ERROR,
-  SET_LOADING_TRUE,
+  BOIL_CREATE_BOILER,
+  BOIL_UPDATE_BOILER,
+  BOIL_DELETE_BOILER,
+  BOIL_SET_ALL_BOILERS,
+  BOIL_SET_ERROR,
+  BOIL_SET_LOADING_TRUE,
 } from '../types/boilersTypes';
 
 export const createBoiler = (boiler) => {
   return {
-    type: CREATE_BOILER,
+    type: BOIL_CREATE_BOILER,
     payload: boiler,
   };
 };
 export const updateBoiler = (boiler) => {
   return {
-    type: UPDATE_BOILER,
+    type: BOIL_UPDATE_BOILER,
     payload: boiler,
   };
 };
 export const deleteBoiler = (boilerId) => {
   return {
-    type: DELETE_BOILER,
+    type: BOIL_DELETE_BOILER,
     payload: boilerId,
   };
 };
 export const setBolilers = (boilers) => {
   return {
-    type: SET_ALL_BOILERS,
+    type: BOIL_SET_ALL_BOILERS,
     payload: boilers,
   };
 };
 export const setError = (error) => {
   return {
-    type: SET_ERROR,
+    type: BOIL_SET_ERROR,
     payload: error,
   };
 };
 export const setLoadingTrue = () => {
   return {
-    type: SET_LOADING_TRUE,
+    type: BOIL_SET_LOADING_TRUE,
   };
 };
 
