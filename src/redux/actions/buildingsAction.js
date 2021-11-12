@@ -112,7 +112,7 @@ const buildingMapperToEnglish = (spanishBuild) => {
     name: spanishBuild.nombre,
     postalCode: spanishBuild.codigoPostal,
     isParticular: spanishBuild.esParticular,
-    // constructionCompanyId: spanishBuild.constructoraId,
+    constructionCompanyId: spanishBuild.constructoraId,
   };
 };
 const buildingMapperToSpanish = (englishBuild) => {
@@ -123,6 +123,6 @@ const buildingMapperToSpanish = (englishBuild) => {
     nombre: englishBuild.name,
     codigoPostal: englishBuild.postalCode,
     esParticular: englishBuild.isParticular,
-    //  constructoraId: englishBuild.constructionCompanyId,
+    constructoraId: englishBuild.constructionCompanyId,
   };
 };
