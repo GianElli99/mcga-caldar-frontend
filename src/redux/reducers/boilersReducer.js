@@ -1,10 +1,10 @@
 import {
-  CREATE_BOILER,
-  UPDATE_BOILER,
-  DELETE_BOILER,
-  SET_ALL_BOILERS,
-  SET_ERROR,
-  SET_LOADING_TRUE,
+  BOIL_CREATE_BOILER,
+  BOIL_UPDATE_BOILER,
+  BOIL_DELETE_BOILER,
+  BOIL_SET_ALL_BOILERS,
+  BOIL_SET_ERROR,
+  BOIL_SET_LOADING_TRUE,
 } from '../types/boilersTypes';
 
 const initialState = {
@@ -15,14 +15,14 @@ const initialState = {
 
 export const boilersReducer = (state = initialState, action) => {
   switch (action.type) {
-    case CREATE_BOILER:
+    case BOIL_CREATE_BOILER:
       return {
         ...state,
         error: '',
         list: [...state.list, action.payload],
         isLoading: false,
       };
-    case UPDATE_BOILER:
+    case BOIL_UPDATE_BOILER:
       return {
         ...state,
         error: '',
@@ -31,22 +31,22 @@ export const boilersReducer = (state = initialState, action) => {
         ),
         isLoading: false,
       };
-    case DELETE_BOILER:
+    case BOIL_DELETE_BOILER:
       return {
         ...state,
         error: '',
         list: state.list.filter((boil) => boil.id !== action.payload),
         isLoading: false,
       };
-    case SET_ALL_BOILERS:
+    case BOIL_SET_ALL_BOILERS:
       return { ...state, list: action.payload, error: '', isLoading: false };
-    case SET_ERROR:
+    case BOIL_SET_ERROR:
       return {
         ...state,
         error: action.payload || 'An error ocurred',
         isLoading: false,
       };
-    case SET_LOADING_TRUE:
+    case BOIL_SET_LOADING_TRUE:
       return {
         ...state,
         isLoading: true,

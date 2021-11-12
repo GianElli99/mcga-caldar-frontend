@@ -1,52 +1,55 @@
 import axios from 'axios';
 import {
-  CREATE_TECHNICIAN,
-  UPDATE_TECHNICIAN,
-  DELETE_TECHNICIAN,
-  SET_ALL_TECHNICIANS,
-  SET_ERROR,
-  SET_LOADING_TRUE,
+  TECH_CREATE_TECHNICIAN,
+  TECH_UPDATE_TECHNICIAN,
+  TECH_DELETE_TECHNICIAN,
+  TECH_SET_ALL_TECHNICIANS,
+  TECH_SET_ERROR,
+  TECH_SET_LOADING_TRUE,
 } from '../types/techniciansTypes';
 
 export const createTechnician = (technician) => {
   return {
-    type: CREATE_TECHNICIAN,
+    type: TECH_CREATE_TECHNICIAN,
     payload: technician,
   };
 };
 export const updateTechnician = (technician) => {
   return {
-    type: UPDATE_TECHNICIAN,
+    type: TECH_UPDATE_TECHNICIAN,
     payload: technician,
   };
 };
 export const deleteTechnician = (technicianId) => {
   return {
-    type: DELETE_TECHNICIAN,
+    type: TECH_DELETE_TECHNICIAN,
     payload: technicianId,
   };
 };
 export const setTechnicians = (technicians) => {
   return {
-    type: SET_ALL_TECHNICIANS,
+    type: TECH_SET_ALL_TECHNICIANS,
     payload: technicians,
   };
 };
 export const setError = (error) => {
   return {
-    type: SET_ERROR,
+    type: TECH_SET_ERROR,
     payload: error,
   };
 };
 export const setLoadingTrue = () => {
   return {
-    type: SET_LOADING_TRUE,
+    type: TECH_SET_LOADING_TRUE,
   };
 };
 export const getTechniciansAsync = () => async (dispatch) => {
   dispatch(setLoadingTrue());
   try {
-    const res = await axios.get('http://localhost:8090/tecnicos');
+    const res = await axios.get(
+      // eslint-disable-next-line no-undef
+      `${process.env.REACT_APP_BACKEND_URL_PORT}/tecnicos`
+    );
     if (res.status === 200) {
       let technicians = [];
       for (let i = 0; i < res.data.length; i++) {
