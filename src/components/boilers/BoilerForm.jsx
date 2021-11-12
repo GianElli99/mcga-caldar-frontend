@@ -3,8 +3,12 @@ import { useForm } from '../../hooks/useForm';
 import styles from './BoilerForm.module.css';
 import { useHistory, useParams } from 'react-router';
 import { useSelector } from 'react-redux';
-import { updateBoiler, createBoiler } from '../../redux/actions/boilersActions';
+import {
+  updateBoilerAsync,
+  createBoilerAsync,
+} from '../../redux/actions/boilersActions';
 import { useDispatch } from 'react-redux';
+import Button from '@mui/lab/LoadingButton';
 
 const initialState = {
   type: '',
@@ -15,6 +19,7 @@ const initialState = {
 export const BoilerForm = () => {
   const [values, handleInputChange, , setAllValues] = useForm(initialState);
   const [isInstalled, setIsInstalled] = useState(false);
+  const isLoading = useSelector((state) => state.boilers.isLoading);
   const history = useHistory();
   const dispatch = useDispatch();
   const { action, boilerId } = useParams();
@@ -44,7 +49,7 @@ export const BoilerForm = () => {
     history.push('/boilers');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (
@@ -60,9 +65,11 @@ export const BoilerForm = () => {
     }
 
     if (action === 'update') {
-      dispatch(updateBoiler({ ...values, isInstalled, id: boilerId }));
+      await dispatch(
+        updateBoilerAsync({ ...values, isInstalled, id: boilerId })
+      );
     } else {
-      dispatch(createBoiler({ ...values, isInstalled }));
+      await dispatch(createBoilerAsync({ ...values, isInstalled }));
     }
 
     history.push('/boilers');
@@ -163,20 +170,19 @@ export const BoilerForm = () => {
         autoComplete="off"
       />
       <div className={styles.actionsContainer}>
-        <button
-          className={styles.btnAccept}
+        <Button
+          color="primary"
+          variant="contained"
+          disableRipple
           type="submit"
+          loading={isLoading}
           onClick={handleSubmit}
         >
           {action.toUpperCase()}
-        </button>
-        <button
-          className={styles.btnCancel}
-          type="button"
-          onClick={handleCancel}
-        >
+        </Button>
+        <Button variant="outlined" type="button" onClick={handleCancel}>
           Cancel
-        </button>
+        </Button>
       </div>
     </form>
   );

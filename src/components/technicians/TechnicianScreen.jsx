@@ -7,10 +7,11 @@ import LinearProgress from '@mui/material/LinearProgress';
 
 export const TechnicianScreen = () => {
   const history = useHistory();
-  const { list: technicians, error } = useSelector(
-    (state) => state.technicians
-  );
-  const isLoading = useSelector((state) => state.technicians.isLoading);
+  const {
+    list: technicians,
+    error,
+    isLoading,
+  } = useSelector((state) => state.technicians);
 
   const handleAddClick = () => {
     history.push('technicians/create');

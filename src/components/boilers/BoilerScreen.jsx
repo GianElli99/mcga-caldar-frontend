@@ -3,10 +3,15 @@ import { BoilerList } from './BoilerList';
 import styles from './BoilerScreen.module.css';
 import { useHistory } from 'react-router';
 import { useSelector } from 'react-redux';
+import LinearProgress from '@mui/material/LinearProgress';
 
 export const BoilerScreen = () => {
   const history = useHistory();
-  const boilers = useSelector((state) => state.boilers.list);
+  const {
+    list: boilers,
+    error,
+    isLoading,
+  } = useSelector((state) => state.boilers);
 
   const handleAddClick = () => {
     history.push('boilers/create');
@@ -22,6 +27,12 @@ export const BoilerScreen = () => {
       <button className={styles.newButton} onClick={handleAddClick}>
         New Boiler
       </button>
+      {isLoading && (
+        <div className={styles.loadingBar}>
+          <LinearProgress />
+        </div>
+      )}
+      <p>{error}</p>
       <BoilerList boilers={boilers} onModify={handleModifyBoiler} />
     </div>
   );
