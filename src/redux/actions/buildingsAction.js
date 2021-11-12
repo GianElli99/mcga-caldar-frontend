@@ -46,7 +46,10 @@ export const setLoadingTrue = () => {
 export const getBuildingsAsync = () => async (dispatch) => {
   dispatch(setLoadingTrue());
   try {
-    const res = await axios.get('http://localhost:8090/edificios');
+    const res = await axios.get(
+      // eslint-disable-next-line no-undef
+      `${process.env.REACT_APP_BACKEND_URL_PORT}/edificios`
+    );
     if (res.status === 200) {
       let buildings = [];
       for (let i = 0; i < res.data.length; i++) {

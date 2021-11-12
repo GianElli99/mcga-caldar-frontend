@@ -61,10 +61,7 @@ export const BuildingForm = () => {
     ) {
       return;
     }
-    if (
-      values.isParticular === true &&
-      values.constructionCompanyId.length === 0
-    ) {
+    if (isParticular === true && values.constructionCompanyId?.length === 0) {
       return;
     }
 
@@ -81,7 +78,7 @@ export const BuildingForm = () => {
     }
     history.push('/buildings');
   };
-
+  console.log(values);
   return (
     <form action="">
       <input
@@ -141,7 +138,7 @@ export const BuildingForm = () => {
         id="constructionCompanyId"
         placeholder="Construction Company ID"
         disabled={isParticular}
-        value={values.constructionCompanyId}
+        value={values.constructionCompanyId || ''}
         onChange={handleInputChange}
         autoComplete="off"
       />
