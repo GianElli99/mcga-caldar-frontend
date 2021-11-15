@@ -4,6 +4,8 @@ import styles from './TechnicianScreen.module.css';
 import { useHistory } from 'react-router';
 import { useSelector } from 'react-redux';
 import LinearProgress from '@mui/material/LinearProgress';
+import { DELETE } from '../../redux/types/modalTypes';
+import { ConfirmDelete } from './ConfirmDelete';
 
 export const TechnicianScreen = () => {
   const history = useHistory();
@@ -11,6 +13,8 @@ export const TechnicianScreen = () => {
     list: technicians,
     error,
     isLoading,
+    actionInProgress,
+    selectedTechnician,
   } = useSelector((state) => state.technicians);
 
   const handleAddClick = () => {
@@ -27,6 +31,9 @@ export const TechnicianScreen = () => {
       <button className={styles.newButton} onClick={handleAddClick}>
         New Technician
       </button>
+      {actionInProgress === DELETE && (
+        <ConfirmDelete technician={selectedTechnician} />
+      )}
       {isLoading && (
         <div className={styles.loadingBar}>
           <LinearProgress />

@@ -95,15 +95,12 @@ export const updateBuildingAsync = (building) => async (dispatch) => {
   dispatch(setLoadingTrue());
   try {
     const espBuilding = buildingMapperToSpanish(building);
-    console.log(`espBuilding`, espBuilding);
     const res = await axios.put(
       // eslint-disable-next-line no-undef
       `${process.env.REACT_APP_BACKEND_URL_PORT}/edificios/${building.id}`,
       espBuilding
     );
     if (res.status === 200) {
-      console.log(`res.data`, res.data);
-      console.log(buildingMapperToEnglish(res.data));
       return dispatch(updateBuilding(buildingMapperToEnglish(res.data)));
     }
   } catch (error) {

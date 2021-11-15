@@ -51,14 +51,16 @@ export const setCreateAction = () => {
     type: TECH_SET_CREATE_ACTION,
   };
 };
-export const setDeleteAction = () => {
+export const setDeleteAction = (technician) => {
   return {
     type: TECH_SET_DELETE_ACTION,
+    payload: technician,
   };
 };
-export const setUpdateAction = () => {
+export const setUpdateAction = (technician) => {
   return {
     type: TECH_SET_UPDATE_ACTION,
+    payload: technician,
   };
 };
 export const getTechniciansAsync = () => async (dispatch) => {

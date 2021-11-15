@@ -9,13 +9,14 @@ import {
   TECH_SET_UPDATE_ACTION,
   TECH_SET_DELETE_ACTION,
 } from '../types/techniciansTypes';
-import { UPDATE, DELETE, CREATE } from '../types/modalTypes';
+import { UPDATE, DELETE, CREATE, NONE } from '../types/modalTypes';
 
 const initialState = {
   list: [],
   error: '',
   isLoading: false,
-  actionInProgress: 'none',
+  actionInProgress: NONE,
+  selectedTechnician: null,
 };
 
 export const techniciansReducer = (state = initialState, action) => {
@@ -65,11 +66,13 @@ export const techniciansReducer = (state = initialState, action) => {
       return {
         ...state,
         actionInProgress: UPDATE,
+        selectedTechnician: { ...action.payload },
       };
     case TECH_SET_DELETE_ACTION:
       return {
         ...state,
         actionInProgress: DELETE,
+        selectedTechnician: { ...action.payload },
       };
 
     default:
