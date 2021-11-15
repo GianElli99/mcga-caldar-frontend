@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from '../../hooks/useForm';
 import styles from './TechnicianForm.module.css';
-import { useHistory, useParams } from 'react-router';
 import { useSelector } from 'react-redux';
 import {
   updateTechnicianAsync,
   createTechnicianAsync,
+  unsetAction,
 } from '../../redux/actions/techniciansActions';
 import { useDispatch } from 'react-redux';
 import Button from '@mui/lab/LoadingButton';
+import { GenericModal } from '../shared/GenericModal';
+import { UPDATE } from '../../redux/types/modalTypes';
 
 const initialState = {
   name: '',
@@ -21,27 +23,15 @@ const initialState = {
 export const TechnicianForm = () => {
   const [values, handleInputChange, , setAllValues] = useForm(initialState);
   const [specializations, setSpecializations] = useState([]);
-  const history = useHistory();
   const dispatch = useDispatch();
-  const { action, technicianId } = useParams();
-  const technicianToModify = useSelector((state) =>
-    state.technicians.list.find((tec) => tec.id === technicianId)
+  const { actionInProgress, selectedTechnician, isLoading } = useSelector(
+    (state) => state.technicians
   );
-  const isLoading = useSelector((state) => state.technicians.isLoading);
 
   useEffect(() => {
-    if (action !== 'update' && action !== 'create') {
-      history.replace('/technicians');
-      return;
-    }
-
-    if (action === 'update') {
-      if (technicianToModify) {
-        setAllValues(technicianToModify);
-        setSpecializations(technicianToModify.specializations);
-      } else {
-        history.replace('/technicians');
-      }
+    if (actionInProgress === UPDATE && selectedTechnician) {
+      setAllValues(selectedTechnician);
+      setSpecializations(selectedTechnician.specializations);
     }
     return () => {};
   }, []);
@@ -56,7 +46,7 @@ export const TechnicianForm = () => {
     }
   };
   const handleCancel = () => {
-    history.push('/technicians');
+    dispatch(unsetAction());
   };
 
   const handleSubmit = async (e) => {
@@ -71,128 +61,129 @@ export const TechnicianForm = () => {
     ) {
       return;
     }
-    if (action === 'update') {
+    if (actionInProgress === UPDATE) {
       await dispatch(
         updateTechnicianAsync({
           ...values,
           specializations,
-          id: technicianId,
+          id: selectedTechnician.id,
         })
       );
     } else {
       await dispatch(createTechnicianAsync({ ...values, specializations }));
     }
-    history.push('/technicians');
   };
   return (
-    <form action="">
-      <input
-        type="text"
-        name="name"
-        id="name"
-        placeholder="Name"
-        value={values.name}
-        onChange={handleInputChange}
-        autoComplete="off"
-      />
-      <input
-        type="text"
-        name="surname"
-        id="surname"
-        placeholder="Surname"
-        value={values.surname}
-        onChange={handleInputChange}
-        autoComplete="off"
-      />
-      <input
-        type="text"
-        name="phone"
-        id="phone"
-        placeholder="Phone number"
-        value={values.phone}
-        onChange={handleInputChange}
-        autoComplete="off"
-      />
-      <input
-        type="text"
-        name="dni"
-        id="dni"
-        placeholder="DNI"
-        value={values.dni}
-        onChange={handleInputChange}
-        autoComplete="off"
-      />
-      <input
-        type="text"
-        name="address"
-        id="address"
-        placeholder="Address"
-        value={values.address}
-        onChange={handleInputChange}
-        autoComplete="off"
-      />
-      <span>Specializations</span>
-      <div className={styles.specializationsContainter}>
-        <label htmlFor="a">
-          A
-          <input
-            type="checkbox"
-            name="a"
-            id="a"
-            value="A"
-            checked={!!specializations.find((x) => x === 'A')}
-            onChange={handleSpecializationChange}
-          />
-        </label>
-        <label>
-          B
-          <input
-            type="checkbox"
-            name="b"
-            id="b"
-            value="B"
-            checked={!!specializations.find((x) => x === 'B')}
-            onChange={handleSpecializationChange}
-          />
-        </label>
-        <label>
-          C
-          <input
-            type="checkbox"
-            name="c"
-            id="c"
-            value="C"
-            checked={!!specializations.find((x) => x === 'C')}
-            onChange={handleSpecializationChange}
-          />
-        </label>
-        <label>
-          D
-          <input
-            type="checkbox"
-            name="d"
-            id="d"
-            value="D"
-            checked={!!specializations.find((x) => x === 'D')}
-            onChange={handleSpecializationChange}
-          />
-        </label>
-      </div>
-      <div className={styles.actionsContainer}>
-        <Button
-          color="primary"
-          variant="contained"
-          disableRipple
-          type="submit"
-          loading={isLoading}
-          onClick={handleSubmit}
-        >
-          {action.toUpperCase()}
-        </Button>
-        <Button variant="outlined" type="button" onClick={handleCancel}>
-          Cancel
-        </Button>
-      </div>
-    </form>
+    <GenericModal>
+      <form action="">
+        <input
+          type="text"
+          name="name"
+          id="name"
+          placeholder="Name"
+          value={values.name}
+          onChange={handleInputChange}
+          autoComplete="off"
+        />
+        <input
+          type="text"
+          name="surname"
+          id="surname"
+          placeholder="Surname"
+          value={values.surname}
+          onChange={handleInputChange}
+          autoComplete="off"
+        />
+        <input
+          type="text"
+          name="phone"
+          id="phone"
+          placeholder="Phone number"
+          value={values.phone}
+          onChange={handleInputChange}
+          autoComplete="off"
+        />
+        <input
+          type="text"
+          name="dni"
+          id="dni"
+          placeholder="DNI"
+          value={values.dni}
+          onChange={handleInputChange}
+          autoComplete="off"
+        />
+        <input
+          type="text"
+          name="address"
+          id="address"
+          placeholder="Address"
+          value={values.address}
+          onChange={handleInputChange}
+          autoComplete="off"
+        />
+        <span>Specializations</span>
+        <div className={styles.specializationsContainter}>
+          <label htmlFor="a">
+            A
+            <input
+              type="checkbox"
+              name="a"
+              id="a"
+              value="A"
+              checked={!!specializations.find((x) => x === 'A')}
+              onChange={handleSpecializationChange}
+            />
+          </label>
+          <label>
+            B
+            <input
+              type="checkbox"
+              name="b"
+              id="b"
+              value="B"
+              checked={!!specializations.find((x) => x === 'B')}
+              onChange={handleSpecializationChange}
+            />
+          </label>
+          <label>
+            C
+            <input
+              type="checkbox"
+              name="c"
+              id="c"
+              value="C"
+              checked={!!specializations.find((x) => x === 'C')}
+              onChange={handleSpecializationChange}
+            />
+          </label>
+          <label>
+            D
+            <input
+              type="checkbox"
+              name="d"
+              id="d"
+              value="D"
+              checked={!!specializations.find((x) => x === 'D')}
+              onChange={handleSpecializationChange}
+            />
+          </label>
+        </div>
+        <div className={styles.actionsContainer}>
+          <Button
+            color="primary"
+            variant="contained"
+            disableRipple
+            type="submit"
+            loading={isLoading}
+            onClick={handleSubmit}
+          >
+            {actionInProgress}
+          </Button>
+          <Button variant="outlined" type="button" onClick={handleCancel}>
+            Cancel
+          </Button>
+        </div>
+      </form>
+    </GenericModal>
   );
 };
