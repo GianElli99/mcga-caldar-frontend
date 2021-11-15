@@ -45,31 +45,6 @@ export const TechnicianForm = () => {
       dispatch(createTechnicianAsync(values));
     }
   };
-
-  // const handleSubmitOLD = async (e) => {
-  //   e.preventDefault();
-
-  //   if (
-  //     values.name.length === 0 ||
-  //     values.surname.length === 0 ||
-  //     values.phone.length === 0 ||
-  //     values.dni.length === 0 ||
-  //     values.address.length === 0
-  //   ) {
-  //     return;
-  //   }
-  //   if (actionInProgress === UPDATE) {
-  //     await dispatch(
-  //       updateTechnicianAsync({
-  //         ...values,
-  //         specializations,
-  //         id: selectedTechnician.id,
-  //       })
-  //     );
-  //   } else {
-  //     await dispatch(createTechnicianAsync({ ...values, specializations }));
-  //   }
-  // };
   const required = (value) => (value ? undefined : 'Required');
   return (
     <GenericModal>
