@@ -9,6 +9,7 @@ import {
   TECH_SET_CREATE_ACTION,
   TECH_SET_UPDATE_ACTION,
   TECH_SET_DELETE_ACTION,
+  TECH_UNSET_ACTION,
 } from '../types/techniciansTypes';
 
 export const createTechnician = (technician) => {
@@ -61,6 +62,11 @@ export const setUpdateAction = (technician) => {
   return {
     type: TECH_SET_UPDATE_ACTION,
     payload: technician,
+  };
+};
+export const unsetAction = () => {
+  return {
+    type: TECH_UNSET_ACTION,
   };
 };
 export const getTechniciansAsync = () => async (dispatch) => {
