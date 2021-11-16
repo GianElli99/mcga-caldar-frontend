@@ -6,6 +6,10 @@ import {
   TECH_SET_ALL_TECHNICIANS,
   TECH_SET_ERROR,
   TECH_SET_LOADING_TRUE,
+  TECH_SET_CREATE_ACTION,
+  TECH_SET_UPDATE_ACTION,
+  TECH_SET_DELETE_ACTION,
+  TECH_UNSET_ACTION,
 } from '../types/techniciansTypes';
 
 export const createTechnician = (technician) => {
@@ -41,6 +45,28 @@ export const setError = (error) => {
 export const setLoadingTrue = () => {
   return {
     type: TECH_SET_LOADING_TRUE,
+  };
+};
+export const setCreateAction = () => {
+  return {
+    type: TECH_SET_CREATE_ACTION,
+  };
+};
+export const setDeleteAction = (technician) => {
+  return {
+    type: TECH_SET_DELETE_ACTION,
+    payload: technician,
+  };
+};
+export const setUpdateAction = (technician) => {
+  return {
+    type: TECH_SET_UPDATE_ACTION,
+    payload: technician,
+  };
+};
+export const unsetAction = () => {
+  return {
+    type: TECH_UNSET_ACTION,
   };
 };
 export const getTechniciansAsync = () => async (dispatch) => {

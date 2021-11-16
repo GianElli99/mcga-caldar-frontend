@@ -5,12 +5,19 @@ import {
   TECH_SET_ALL_TECHNICIANS,
   TECH_SET_ERROR,
   TECH_SET_LOADING_TRUE,
+  TECH_SET_CREATE_ACTION,
+  TECH_SET_UPDATE_ACTION,
+  TECH_SET_DELETE_ACTION,
+  TECH_UNSET_ACTION,
 } from '../types/techniciansTypes';
+import { UPDATE, DELETE, CREATE, NONE } from '../types/modalTypes';
 
 const initialState = {
   list: [],
   error: '',
   isLoading: false,
+  actionInProgress: NONE,
+  selectedTechnician: null,
 };
 
 export const techniciansReducer = (state = initialState, action) => {
@@ -21,6 +28,8 @@ export const techniciansReducer = (state = initialState, action) => {
         error: '',
         list: [...state.list, action.payload],
         isLoading: false,
+        actionInProgress: NONE,
+        selectedTechnician: null,
       };
     case TECH_UPDATE_TECHNICIAN:
       return {
@@ -30,6 +39,8 @@ export const techniciansReducer = (state = initialState, action) => {
           tec.id === action.payload.id ? action.payload : tec
         ),
         isLoading: false,
+        actionInProgress: NONE,
+        selectedTechnician: null,
       };
     case TECH_DELETE_TECHNICIAN:
       return {
@@ -37,6 +48,8 @@ export const techniciansReducer = (state = initialState, action) => {
         error: '',
         list: state.list.filter((tec) => tec.id !== action.payload),
         isLoading: false,
+        actionInProgress: NONE,
+        selectedTechnician: null,
       };
     case TECH_SET_ALL_TECHNICIANS:
       return { ...state, list: action.payload, error: '', isLoading: false };
@@ -50,6 +63,29 @@ export const techniciansReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: true,
+      };
+    case TECH_SET_CREATE_ACTION:
+      return {
+        ...state,
+        actionInProgress: CREATE,
+      };
+    case TECH_SET_UPDATE_ACTION:
+      return {
+        ...state,
+        actionInProgress: UPDATE,
+        selectedTechnician: { ...action.payload },
+      };
+    case TECH_SET_DELETE_ACTION:
+      return {
+        ...state,
+        actionInProgress: DELETE,
+        selectedTechnician: { ...action.payload },
+      };
+    case TECH_UNSET_ACTION:
+      return {
+        ...state,
+        actionInProgress: NONE,
+        selectedTechnician: null,
       };
 
     default:

@@ -1,14 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { useForm } from '../../hooks/useForm';
+import React from 'react';
 import styles from './TechnicianForm.module.css';
-import { useHistory, useParams } from 'react-router';
 import { useSelector } from 'react-redux';
 import {
   updateTechnicianAsync,
   createTechnicianAsync,
+  unsetAction,
 } from '../../redux/actions/techniciansActions';
 import { useDispatch } from 'react-redux';
 import Button from '@mui/lab/LoadingButton';
+import { GenericModal } from '../shared/GenericModal';
+import { UPDATE } from '../../redux/types/modalTypes';
+import { Form, Field } from 'react-final-form';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import { TextInput } from '../shared/TextInput';
 
 const initialState = {
   name: '',
@@ -16,183 +21,131 @@ const initialState = {
   phone: '',
   dni: '',
   address: '',
+  specializations: [],
 };
 
 export const TechnicianForm = () => {
-  const [values, handleInputChange, , setAllValues] = useForm(initialState);
-  const [specializations, setSpecializations] = useState([]);
-  const history = useHistory();
-  const dispatch = useDispatch();
-  const { action, technicianId } = useParams();
-  const technicianToModify = useSelector((state) =>
-    state.technicians.list.find((tec) => tec.id === technicianId)
+  const { actionInProgress, selectedTechnician, isLoading } = useSelector(
+    (state) => state.technicians
   );
-  const isLoading = useSelector((state) => state.technicians.isLoading);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (action !== 'update' && action !== 'create') {
-      history.replace('/technicians');
-      return;
-    }
-
-    if (action === 'update') {
-      if (technicianToModify) {
-        setAllValues(technicianToModify);
-        setSpecializations(technicianToModify.specializations);
-      } else {
-        history.replace('/technicians');
-      }
-    }
-    return () => {};
-  }, []);
-
-  const handleSpecializationChange = ({ target }) => {
-    if (target.checked && specializations.indexOf(target.value) === -1) {
-      setSpecializations([...specializations, target.value]);
-      return;
-    }
-    if (!target.checked) {
-      setSpecializations(specializations.filter((x) => x !== target.value));
-    }
-  };
   const handleCancel = () => {
-    history.push('/technicians');
+    dispatch(unsetAction());
   };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (
-      values.name.length === 0 ||
-      values.surname.length === 0 ||
-      values.phone.length === 0 ||
-      values.dni.length === 0 ||
-      values.address.length === 0
-    ) {
-      return;
+  const handleFormSubmit = (technician) => {
+    if (!technician.specializations) {
+      technician.specializations = [];
     }
-    if (action === 'update') {
-      await dispatch(
-        updateTechnicianAsync({
-          ...values,
-          specializations,
-          id: technicianId,
-        })
-      );
+    if (actionInProgress === UPDATE) {
+      technician.id = selectedTechnician.id;
+      dispatch(updateTechnicianAsync(technician));
     } else {
-      await dispatch(createTechnicianAsync({ ...values, specializations }));
+      dispatch(createTechnicianAsync(technician));
     }
-    history.push('/technicians');
   };
+  const required = (value) => (value ? undefined : 'Required');
   return (
-    <form action="">
-      <input
-        type="text"
-        name="name"
-        id="name"
-        placeholder="Name"
-        value={values.name}
-        onChange={handleInputChange}
-        autoComplete="off"
-      />
-      <input
-        type="text"
-        name="surname"
-        id="surname"
-        placeholder="Surname"
-        value={values.surname}
-        onChange={handleInputChange}
-        autoComplete="off"
-      />
-      <input
-        type="text"
-        name="phone"
-        id="phone"
-        placeholder="Phone number"
-        value={values.phone}
-        onChange={handleInputChange}
-        autoComplete="off"
-      />
-      <input
-        type="text"
-        name="dni"
-        id="dni"
-        placeholder="DNI"
-        value={values.dni}
-        onChange={handleInputChange}
-        autoComplete="off"
-      />
-      <input
-        type="text"
-        name="address"
-        id="address"
-        placeholder="Address"
-        value={values.address}
-        onChange={handleInputChange}
-        autoComplete="off"
-      />
-      <span>Specializations</span>
-      <div className={styles.specializationsContainter}>
-        <label htmlFor="a">
-          A
-          <input
-            type="checkbox"
-            name="a"
-            id="a"
-            value="A"
-            checked={!!specializations.find((x) => x === 'A')}
-            onChange={handleSpecializationChange}
-          />
-        </label>
-        <label>
-          B
-          <input
-            type="checkbox"
-            name="b"
-            id="b"
-            value="B"
-            checked={!!specializations.find((x) => x === 'B')}
-            onChange={handleSpecializationChange}
-          />
-        </label>
-        <label>
-          C
-          <input
-            type="checkbox"
-            name="c"
-            id="c"
-            value="C"
-            checked={!!specializations.find((x) => x === 'C')}
-            onChange={handleSpecializationChange}
-          />
-        </label>
-        <label>
-          D
-          <input
-            type="checkbox"
-            name="d"
-            id="d"
-            value="D"
-            checked={!!specializations.find((x) => x === 'D')}
-            onChange={handleSpecializationChange}
-          />
-        </label>
-      </div>
-      <div className={styles.actionsContainer}>
-        <Button
-          color="primary"
-          variant="contained"
-          disableRipple
-          type="submit"
-          loading={isLoading}
-          onClick={handleSubmit}
+    <GenericModal>
+      <>
+        <h2>Create Technician</h2>
+        <Form
+          onSubmit={handleFormSubmit}
+          initialValues={selectedTechnician || initialState}
         >
-          {action.toUpperCase()}
-        </Button>
-        <Button variant="outlined" type="button" onClick={handleCancel}>
-          Cancel
-        </Button>
-      </div>
-    </form>
+          {({ handleSubmit, submitting }) => (
+            <form onSubmit={handleSubmit}>
+              <div>
+                <Field name="name" validate={required}>
+                  {({ input, meta }) => (
+                    <TextInput input={input} meta={meta} name="Name" />
+                  )}
+                </Field>
+              </div>
+              <div>
+                <Field name="surname" validate={required}>
+                  {({ input, meta }) => (
+                    <TextInput input={input} meta={meta} name="Surname" />
+                  )}
+                </Field>
+              </div>
+
+              <div>
+                <Field name="phone" validate={required}>
+                  {({ input, meta }) => (
+                    <TextInput input={input} meta={meta} name="Phone" />
+                  )}
+                </Field>
+              </div>
+              <div>
+                <Field name="dni" validate={required}>
+                  {({ input, meta }) => (
+                    <TextInput input={input} meta={meta} name="DNI" />
+                  )}
+                </Field>
+              </div>
+              <div>
+                <Field name="address" validate={required}>
+                  {({ input, meta }) => (
+                    <TextInput input={input} meta={meta} name="Address" />
+                  )}
+                </Field>
+              </div>
+              <span>Specializations</span>
+              <div className={styles.specializationsContainter}>
+                <Field name="specializations" value="A" type="checkbox">
+                  {({ input }) => (
+                    <FormControlLabel
+                      control={<Checkbox {...input} />}
+                      label="A"
+                    />
+                  )}
+                </Field>
+                <Field name="specializations" value="B" type="checkbox">
+                  {({ input }) => (
+                    <FormControlLabel
+                      control={<Checkbox {...input} />}
+                      label="B"
+                    />
+                  )}
+                </Field>
+                <Field name="specializations" value="C" type="checkbox">
+                  {({ input }) => (
+                    <FormControlLabel
+                      control={<Checkbox {...input} />}
+                      label="C"
+                    />
+                  )}
+                </Field>
+                <Field name="specializations" value="D" type="checkbox">
+                  {({ input }) => (
+                    <FormControlLabel
+                      control={<Checkbox {...input} />}
+                      label="D"
+                    />
+                  )}
+                </Field>
+              </div>
+              <div className={styles.actionsContainer}>
+                <Button
+                  disabled={submitting}
+                  color="primary"
+                  variant="contained"
+                  disableRipple
+                  type="submit"
+                  loading={isLoading}
+                  onClick={handleSubmit}
+                >
+                  {actionInProgress}
+                </Button>
+                <Button variant="outlined" type="button" onClick={handleCancel}>
+                  Cancel
+                </Button>
+              </div>
+            </form>
+          )}
+        </Form>
+      </>
+    </GenericModal>
   );
 };

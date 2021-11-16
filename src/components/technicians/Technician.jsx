@@ -4,10 +4,13 @@ import { FaTimes as DeleteIcon } from 'react-icons/fa';
 import { MdEdit as EditIcon } from 'react-icons/md';
 import styles from './Technician.module.css';
 import { useDispatch } from 'react-redux';
-import { deleteTechniciansAsync } from '../../redux/actions/techniciansActions';
+import {
+  setDeleteAction,
+  setUpdateAction,
+} from '../../redux/actions/techniciansActions';
 
-export const Technician = ({ technician, onModify }) => {
-  const { id, name, surname, phone, specializations } = technician;
+export const Technician = ({ technician }) => {
+  const { name, surname, phone, specializations } = technician;
   const dispatch = useDispatch();
   return (
     <div className={styles.container}>
@@ -24,10 +27,13 @@ export const Technician = ({ technician, onModify }) => {
         <span className={styles.content}>{specializations.toString()}</span>
       </div>
       <div className={styles.actions}>
-        <EditIcon className={styles.editIcon} onClick={() => onModify(id)} />
+        <EditIcon
+          className={styles.editIcon}
+          onClick={() => dispatch(setUpdateAction(technician))}
+        />
         <DeleteIcon
           className={styles.deleteIcon}
-          onClick={() => dispatch(deleteTechniciansAsync(id))}
+          onClick={() => dispatch(setDeleteAction(technician))}
         />
       </div>
     </div>
@@ -36,5 +42,4 @@ export const Technician = ({ technician, onModify }) => {
 
 Technician.propTypes = {
   technician: PropTypes.object.isRequired,
-  onModify: PropTypes.func.isRequired,
 };
