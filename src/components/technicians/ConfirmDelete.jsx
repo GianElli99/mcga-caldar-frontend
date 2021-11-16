@@ -1,26 +1,43 @@
 import React from 'react';
 import { GenericModal } from '../shared/GenericModal';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import Button from '@mui/lab/LoadingButton';
 import {
   deleteTechniciansAsync,
   unsetAction,
 } from '../../redux/actions/techniciansActions';
+import styles from './ConfirmDelete.module.css';
+import { ErrorContainer } from '../shared/ErrorContainer';
 
 export const ConfirmDelete = ({ technician }) => {
   const dispatch = useDispatch();
+  const { isLoading, error } = useSelector((state) => state.technicians);
+
+  const handleCancel = () => dispatch(unsetAction());
+  const handleDelete = () => dispatch(deleteTechniciansAsync(technician.id));
 
   return (
     <GenericModal>
       <>
         <h2>You are about to delete a Technician</h2>
+        {error && <ErrorContainer message={error} />}
         <p>{`This will delete ${technician.name} ${technician.surname} permanently`}</p>
         <p>Are you sure?</p>
-
-        <button onClick={() => dispatch(unsetAction())}>Cancel</button>
-        <button onClick={() => dispatch(deleteTechniciansAsync(technician.id))}>
-          Delete
-        </button>
+        <div className={styles.actionsContainer}>
+          <Button onClick={handleCancel} variant="outlined" disableRipple>
+            Cancel
+          </Button>
+          <Button
+            onClick={handleDelete}
+            variant="contained"
+            disableRipple
+            color="error"
+            loading={isLoading}
+          >
+            Delete
+          </Button>
+        </div>
       </>
     </GenericModal>
   );

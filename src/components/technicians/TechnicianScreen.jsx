@@ -12,7 +12,6 @@ export const TechnicianScreen = () => {
   const dispatch = useDispatch();
   const {
     list: technicians,
-    error,
     isLoading,
     actionInProgress,
     selectedTechnician,
@@ -39,7 +38,6 @@ export const TechnicianScreen = () => {
           <LinearProgress />
         </div>
       )}
-      {error && <p>{error}</p>}
       <TechnicianList technicians={technicians} />
     </div>
   );

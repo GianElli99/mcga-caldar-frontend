@@ -86,6 +86,7 @@ export const techniciansReducer = (state = initialState, action) => {
         ...state,
         actionInProgress: NONE,
         selectedTechnician: null,
+        error: '',
       };
 
     default:

@@ -2,10 +2,13 @@ import React from 'react';
 import Modal from '@mui/material/Modal';
 import styles from './GenericModal.module.css';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { unsetAction } from '../../redux/actions/techniciansActions';
 
 export const GenericModal = ({ children }) => {
+  const dispatch = useDispatch();
   return (
-    <Modal open={true}>
+    <Modal open={true} onClose={() => dispatch(unsetAction())}>
       <div className={styles.wrapper}>{children}</div>
     </Modal>
   );
