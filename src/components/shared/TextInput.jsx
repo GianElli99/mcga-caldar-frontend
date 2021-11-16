@@ -12,6 +12,8 @@ export const TextInput = ({ input, meta, name }) => {
       required
       error={meta.error && meta.touched}
       helperText={meta.touched && meta.error}
+      size="small"
+      fullWidth
       margin="normal"
     />
   );
