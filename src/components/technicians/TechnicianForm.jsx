@@ -14,6 +14,7 @@ import { Form, Field } from 'react-final-form';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { TextInput } from '../shared/TextInput';
+import { ErrorContainer } from '../shared/ErrorContainer';
 
 const initialState = {
   name: '',
@@ -25,10 +26,11 @@ const initialState = {
 };
 
 export const TechnicianForm = () => {
-  const { actionInProgress, selectedTechnician, isLoading } = useSelector(
-    (state) => state.technicians
-  );
+  const { actionInProgress, selectedTechnician, isLoading, error } =
+    useSelector((state) => state.technicians);
   const dispatch = useDispatch();
+  let action =
+    actionInProgress.charAt(0) + actionInProgress.toLowerCase().slice(1);
 
   const handleCancel = () => {
     dispatch(unsetAction());
@@ -48,7 +50,8 @@ export const TechnicianForm = () => {
   return (
     <GenericModal>
       <>
-        <h2>Create Technician</h2>
+        <h2>{action} Technician</h2>
+        {error && <ErrorContainer message={error} />}
         <Form
           onSubmit={handleFormSubmit}
           initialValues={selectedTechnician || initialState}
@@ -91,7 +94,7 @@ export const TechnicianForm = () => {
                   )}
                 </Field>
               </div>
-              <span>Specializations</span>
+              <p>Specializations</p>
               <div className={styles.specializationsContainter}>
                 <Field name="specializations" value="A" type="checkbox">
                   {({ input }) => (
