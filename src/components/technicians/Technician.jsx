@@ -11,6 +11,7 @@ import {
 
 export const Technician = ({ technician }) => {
   const { name, surname, phone, specializations } = technician;
+
   const dispatch = useDispatch();
   return (
     <div className={styles.container}>

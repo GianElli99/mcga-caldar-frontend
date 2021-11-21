@@ -6,8 +6,34 @@ import {
   BUILD_SET_ALL_BUILDINGS,
   BUILD_SET_ERROR,
   BUILD_SET_LOADING_TRUE,
+  BUILD_SET_CREATE_ACTION,
+  BUILD_SET_UPDATE_ACTION,
+  BUILD_SET_DELETE_ACTION,
+  BUILD_UNSET_ACTION,
 } from '../types/buildingsTypes';
 
+export const setCreateAction = () => {
+  return {
+    type: BUILD_SET_CREATE_ACTION,
+  };
+};
+export const setUpdateAction = (building) => {
+  return {
+    type: BUILD_SET_UPDATE_ACTION,
+    payload: building,
+  };
+};
+export const setDeleteAction = (building) => {
+  return {
+    type: BUILD_SET_DELETE_ACTION,
+    payload: building,
+  };
+};
+export const unsetAction = () => {
+  return {
+    type: BUILD_UNSET_ACTION,
+  };
+};
 export const createBuilding = (building) => {
   return {
     type: BUILD_CREATE_BUILDING,
