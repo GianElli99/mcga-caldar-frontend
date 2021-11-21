@@ -1,14 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { useForm } from '../../hooks/useForm';
+import React from 'react';
 import styles from './BuildingForm.module.css';
-import { useHistory, useParams } from 'react-router';
 import { useSelector } from 'react-redux';
 import {
   updateBuildingAsync,
   createBuildingAsync,
+  unsetAction,
 } from '../../redux/actions/buildingsAction';
 import { useDispatch } from 'react-redux';
 import Button from '@mui/lab/LoadingButton';
+import { GenericModal } from '../shared/GenericModal';
+import { UPDATE } from '../../redux/types/modalTypes';
+import { Form, Field } from 'react-final-form';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import { TextInput } from '../shared/TextInput';
+import { ErrorContainer } from '../shared/ErrorContainer';
 
 const initialState = {
   direction: '',
@@ -19,148 +25,107 @@ const initialState = {
 };
 
 export const BuildingForm = () => {
-  const [values, handleInputChange, , setAllValues] = useForm(initialState);
-  const [isParticular, setParticular] = useState(false);
-  const history = useHistory();
-  const dispatch = useDispatch();
-  const { action, buildingId } = useParams();
-  const buildingToModify = useSelector((state) =>
-    state.buildings.list.find((build) => build.id === buildingId)
+  const { actionInProgress, selectedBuilding, isLoading, error } = useSelector(
+    (state) => state.buildings
   );
-  const isLoading = useSelector((state) => state.buildings.isLoading);
-
-  useEffect(() => {
-    if (action !== 'update' && action !== 'create') {
-      history.replace('/buildings');
-      return;
-    }
-
-    if (action === 'update') {
-      if (buildingToModify) {
-        setAllValues(buildingToModify);
-        setParticular(buildingToModify.isParticular);
-      } else {
-        history.replace('/buildings');
-      }
-    }
-    return () => {};
-  }, []);
+  const dispatch = useDispatch();
+  let action =
+    actionInProgress.charAt(0) + actionInProgress.toLowerCase().slice(1);
 
   const handleCancel = () => {
-    history.push('/buildings');
+    dispatch(unsetAction());
   };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (
-      values.direction.length === 0 ||
-      values.city.length === 0 ||
-      values.name.length === 0 ||
-      values.postalCode.length === 0
-    ) {
-      return;
-    }
-    if (
-      isParticular === true &&
-      values.constructionCompanyId &&
-      values.constructionCompanyId.length === 0
-    ) {
-      return;
-    }
-
-    if (action === 'update') {
-      await dispatch(
-        updateBuildingAsync({
-          ...values,
-          isParticular,
-          id: buildingId,
-        })
-      );
+  const handleFormSubmit = (building) => {
+    if (actionInProgress === UPDATE) {
+      building.id = selectedBuilding.id;
+      dispatch(updateBuildingAsync(building));
     } else {
-      await dispatch(createBuildingAsync({ ...values, isParticular }));
+      dispatch(createBuildingAsync(building));
     }
-    history.push('/buildings');
   };
-  return (
-    <form action="">
-      <input
-        type="text"
-        name="direction"
-        id="direction"
-        placeholder="Direction"
-        value={values.direction}
-        onChange={handleInputChange}
-        autoComplete="off"
-      />
-      <input
-        type="text"
-        name="city"
-        id="city"
-        placeholder="City"
-        value={values.city}
-        onChange={handleInputChange}
-        autoComplete="off"
-      />
-      <input
-        type="text"
-        name="name"
-        id="name"
-        placeholder="Name"
-        value={values.name}
-        onChange={handleInputChange}
-        autoComplete="off"
-      />
-      <input
-        type="text"
-        name="postalCode"
-        id="postalCode"
-        placeholder="Postal Code"
-        value={values.postalCode}
-        onChange={handleInputChange}
-        autoComplete="off"
-      />
-      <div className={styles.specializationsContainter}>
-        <label>
-          Is Particular?
-          <input
-            type="checkbox"
-            name="isParticular"
-            id="isParticular"
-            value="isParticular"
-            checked={isParticular}
-            onChange={(e) => {
-              setParticular(e.currentTarget.checked);
-            }}
-          />
-        </label>
-      </div>
-      <input
-        type="text"
-        name="constructionCompanyId"
-        id="constructionCompanyId"
-        placeholder="Construction Company ID"
-        disabled={isParticular}
-        value={values.constructionCompanyId || ''}
-        onChange={handleInputChange}
-        autoComplete="off"
-      />
+  const required = (value) => (value ? undefined : 'Required');
 
-      <div className={styles.actionsContainer}>
-        <Button
-          color="primary"
-          variant="contained"
-          disableRipple
-          type="submit"
-          loading={isLoading}
-          onClick={handleSubmit}
+  return (
+    <GenericModal>
+      <>
+        <h2>{action} Building</h2>
+        {error && <ErrorContainer message={error} />}
+        <Form
+          onSubmit={handleFormSubmit}
+          initialValues={selectedBuilding || initialState}
         >
-          {action.toUpperCase()}
-        </Button>
-        <Button variant="outlined" type="button" onClick={handleCancel}>
-          Cancel
-        </Button>
-      </div>
-    </form>
+          {({ handleSubmit, submitting }) => (
+            <form onSubmit={handleSubmit}>
+              <div>
+                <Field name="direction" validate={required}>
+                  {({ input, meta }) => (
+                    <TextInput input={input} meta={meta} name="Direction" />
+                  )}
+                </Field>
+              </div>
+              <div>
+                <Field name="city" validate={required}>
+                  {({ input, meta }) => (
+                    <TextInput input={input} meta={meta} name="City" />
+                  )}
+                </Field>
+              </div>
+
+              <div>
+                <Field name="name" validate={required}>
+                  {({ input, meta }) => (
+                    <TextInput input={input} meta={meta} name="Name" />
+                  )}
+                </Field>
+              </div>
+              <div>
+                <Field name="postalCode" validate={required}>
+                  {({ input, meta }) => (
+                    <TextInput input={input} meta={meta} name="Postal Code" />
+                  )}
+                </Field>
+              </div>
+              <div className={styles.buildingsContainter}>
+                <Field name="isParticular" type="checkbox">
+                  {({ input }) => (
+                    <FormControlLabel
+                      control={<Checkbox {...input} />}
+                      label="Is particular?"
+                    />
+                  )}
+                </Field>
+              </div>
+              <div>
+                <Field name="constructionCompanyId">
+                  {({ input, meta }) => (
+                    <TextInput
+                      input={input}
+                      meta={meta}
+                      name="Construction Company ID"
+                    />
+                  )}
+                </Field>
+              </div>
+              <div className={styles.actionsContainer}>
+                <Button
+                  disabled={submitting}
+                  color="primary"
+                  variant="contained"
+                  disableRipple
+                  type="submit"
+                  loading={isLoading}
+                  onClick={handleSubmit}
+                >
+                  {actionInProgress}
+                </Button>
+                <Button variant="outlined" type="button" onClick={handleCancel}>
+                  Cancel
+                </Button>
+              </div>
+            </form>
+          )}
+        </Form>
+      </>
+    </GenericModal>
   );
 };

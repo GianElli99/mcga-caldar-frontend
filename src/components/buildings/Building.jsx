@@ -4,10 +4,14 @@ import { FaTimes as DeleteIcon } from 'react-icons/fa';
 import { MdEdit as EditIcon } from 'react-icons/md';
 import styles from './Building.module.css';
 import { useDispatch } from 'react-redux';
-import { deleteBuildingsAsync } from '../../redux/actions/buildingsAction';
+import {
+  setDeleteAction,
+  setUpdateAction,
+} from '../../redux/actions/buildingsAction';
 
-export const Building = ({ building, onModify }) => {
-  const { id, direction, city, postalCode } = building;
+export const Building = ({ building }) => {
+  const { direction, city, postalCode } = building;
+
   const dispatch = useDispatch();
   return (
     <div className={styles.container}>
@@ -21,13 +25,16 @@ export const Building = ({ building, onModify }) => {
       </div>
       <div className={styles.column}>
         <span className={styles.title}>Postal Code</span>
-        <span className={styles.content}>{postalCode.toString()}</span>
+        <span className={styles.content}>{postalCode}</span>
       </div>
       <div className={styles.actions}>
-        <EditIcon className={styles.editIcon} onClick={() => onModify(id)} />
+        <EditIcon
+          className={styles.editIcon}
+          onClick={() => dispatch(setUpdateAction(building))}
+        />
         <DeleteIcon
           className={styles.deleteIcon}
-          onClick={() => dispatch(deleteBuildingsAsync(id))}
+          onClick={() => dispatch(setDeleteAction(building))}
         />
       </div>
     </div>
@@ -36,5 +43,4 @@ export const Building = ({ building, onModify }) => {
 
 Building.propTypes = {
   building: PropTypes.object.isRequired,
-  onModify: PropTypes.func.isRequired,
 };
