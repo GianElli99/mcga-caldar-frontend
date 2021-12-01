@@ -13,11 +13,15 @@ import { UPDATE } from '../../redux/types/modalTypes';
 import { Form, Field } from 'react-final-form';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
+import Checkbox from '@mui/material/Checkbox';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import { TextInput } from '../shared/TextInput';
 import { ErrorContainer } from '../shared/ErrorContainer';
 
 const initialState = {
-  type: '',
+  type: 'A',
+  isInstalled: false,
   maintenanceTimeMinutes: '',
   buildingId: '',
 };
@@ -26,6 +30,7 @@ export const BoilerForm = () => {
   const { actionInProgress, selectedBoiler, isLoading, error } = useSelector(
     (state) => state.boilers
   );
+  const { list: buildings } = useSelector((state) => state.buildings);
   const dispatch = useDispatch();
   let action =
     actionInProgress.charAt(0) + actionInProgress.toLowerCase().slice(1);
@@ -89,11 +94,14 @@ export const BoilerForm = () => {
                   )}
                 </Field>
               </div>
-              <p>Is installed?</p>
               <div className={styles.specializationsContainter}>
-                <Field name="isInstalled" value="" type="checkbox">
+                <Field name="isInstalled" type="checkbox">
                   {({ input }) => (
-                    <FormControlLabel control={<Radio {...input} />} />
+                    <FormControlLabel
+                      labelPlacement="start"
+                      label="Is Installed?"
+                      control={<Checkbox {...input} />}
+                    />
                   )}
                 </Field>
               </div>
@@ -112,11 +120,20 @@ export const BoilerForm = () => {
               <div>
                 <Field name="buildingId" validate={required}>
                   {({ input, meta }) => (
-                    <TextInput input={input} meta={meta} name="buildingId" />
+                    <Select
+                      {...input}
+                      label="Building Id"
+                      error={meta.error && meta.touched}
+                    >
+                      {buildings.map((x) => (
+                        <MenuItem key={x.id} value={x.id}>
+                          {x.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
                   )}
                 </Field>
               </div>
-
               <div className={styles.actionsContainer}>
                 <Button
                   disabled={submitting}
