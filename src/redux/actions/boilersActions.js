@@ -6,6 +6,10 @@ import {
   BOIL_SET_ALL_BOILERS,
   BOIL_SET_ERROR,
   BOIL_SET_LOADING_TRUE,
+  BOIL_SET_CREATE_ACTION,
+  BOIL_SET_DELETE_ACTION,
+  BOIL_UNSET_ACTION,
+  BOIL_SET_UPDATE_ACTION,
 } from '../types/boilersTypes';
 
 export const createBoiler = (boiler) => {
@@ -41,6 +45,28 @@ export const setError = (error) => {
 export const setLoadingTrue = () => {
   return {
     type: BOIL_SET_LOADING_TRUE,
+  };
+};
+export const setCreateAction = () => {
+  return {
+    type: BOIL_SET_CREATE_ACTION,
+  };
+};
+export const setUpdateAction = (boiler) => {
+  return {
+    type: BOIL_SET_UPDATE_ACTION,
+    payload: boiler,
+  };
+};
+export const setDeleteAction = (boiler) => {
+  return {
+    type: BOIL_SET_DELETE_ACTION,
+    payload: boiler,
+  };
+};
+export const unsetAction = () => {
+  return {
+    type: BOIL_UNSET_ACTION,
   };
 };
 

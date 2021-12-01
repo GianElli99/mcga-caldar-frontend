@@ -52,5 +52,4 @@ export const Boiler = ({ boiler }) => {
 
 Boiler.propTypes = {
   boiler: PropTypes.object.isRequired,
-  onModify: PropTypes.func.isRequired,
 };

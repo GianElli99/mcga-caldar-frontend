@@ -12,8 +12,7 @@ import { GenericModal } from '../shared/GenericModal';
 import { UPDATE } from '../../redux/types/modalTypes';
 import { Form, Field } from 'react-final-form';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Radio from '@mui/material/Checkbox';
-import Checkbox from '@mui/material/Checkbox';
+import Radio from '@mui/material/Radio';
 import { TextInput } from '../shared/TextInput';
 import { ErrorContainer } from '../shared/ErrorContainer';
 
@@ -94,7 +93,7 @@ export const BoilerForm = () => {
               <div className={styles.specializationsContainter}>
                 <Field name="isInstalled" value="" type="checkbox">
                   {({ input }) => (
-                    <FormControlLabel control={<Checkbox {...input} />} />
+                    <FormControlLabel control={<Radio {...input} />} />
                   )}
                 </Field>
               </div>

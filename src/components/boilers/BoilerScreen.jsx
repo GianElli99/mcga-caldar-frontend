@@ -38,7 +38,7 @@ export const BoilerScreen = () => {
         </div>
       )}
       {error && <p>{error}</p>}
-      <BoilerList technicians={boilers} />
+      <BoilerList boilers={boilers} />
     </div>
   );
 };
