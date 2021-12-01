@@ -1,14 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { useForm } from '../../hooks/useForm';
+import React from 'react';
 import styles from './BoilerForm.module.css';
-import { useHistory, useParams } from 'react-router';
 import { useSelector } from 'react-redux';
 import {
   updateBoilerAsync,
   createBoilerAsync,
+  unsetAction,
 } from '../../redux/actions/boilersActions';
 import { useDispatch } from 'react-redux';
 import Button from '@mui/lab/LoadingButton';
+import { GenericModal } from '../shared/GenericModal';
+import { UPDATE } from '../../redux/types/modalTypes';
+import { Form, Field } from 'react-final-form';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Radio from '@mui/material/Checkbox';
+import Checkbox from '@mui/material/Checkbox';
+import { TextInput } from '../shared/TextInput';
+import { ErrorContainer } from '../shared/ErrorContainer';
 
 const initialState = {
   type: '',
@@ -17,173 +24,120 @@ const initialState = {
 };
 
 export const BoilerForm = () => {
-  const [values, handleInputChange, , setAllValues] = useForm(initialState);
-  const [isInstalled, setIsInstalled] = useState(false);
-  const isLoading = useSelector((state) => state.boilers.isLoading);
-  const history = useHistory();
-  const dispatch = useDispatch();
-  const { action, boilerId } = useParams();
-  const boilerToModify = useSelector((state) =>
-    state.boilers.list.find((boil) => boil.id === boilerId)
+  const { actionInProgress, selectedBoiler, isLoading, error } = useSelector(
+    (state) => state.boilers
   );
-
-  const buildings = useSelector((state) => state.buildings.list);
-  useEffect(() => {
-    if (action !== 'update' && action !== 'create') {
-      history.replace('/boilers');
-      return;
-    }
-
-    if (action === 'update') {
-      if (boilerToModify) {
-        setAllValues(boilerToModify);
-        setIsInstalled(boilerToModify.isInstalled);
-      } else {
-        history.replace('/boilers');
-      }
-    }
-    return () => {};
-  }, []);
+  const dispatch = useDispatch();
+  let action =
+    actionInProgress.charAt(0) + actionInProgress.toLowerCase().slice(1);
 
   const handleCancel = () => {
-    history.push('/boilers');
+    dispatch(unsetAction());
   };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (
-      values.type.length === 0 ||
-      values.maintenanceTimeMinutes.length === 0
-    ) {
-      return;
-    }
-    if (values.isIstalled === true) {
-      if (values.buildingId.length === 0) {
-        return;
-      }
-    }
-
-    if (action === 'update') {
-      await dispatch(
-        updateBoilerAsync({ ...values, isInstalled, id: boilerId })
-      );
+  const handleFormSubmit = (boiler) => {
+    if (actionInProgress === UPDATE) {
+      boiler.id = selectedBoiler.id;
+      dispatch(updateBoilerAsync(boiler));
     } else {
-      await dispatch(createBoilerAsync({ ...values, isInstalled }));
+      dispatch(createBoilerAsync(boiler));
     }
-
-    history.push('/boilers');
   };
 
-  const handleIsInstalledToggle = (isInstalled) => {
-    if (isInstalled === false) {
-      setAllValues({ ...values, buildingId: '' });
-    }
-    setIsInstalled(isInstalled);
-  };
-
+  const required = (value) => (value ? undefined : 'Required');
   return (
-    <form action="">
-      <span>Boiler type</span>
-      <div className={styles.typesBoilers}>
-        <label htmlFor="typeA">
-          A
-          <input
-            type="radio"
-            name="type"
-            id="typeA"
-            value="A"
-            checked={values.type === 'A'}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label htmlFor="typeB">
-          B
-          <input
-            type="radio"
-            name="type"
-            id="typeB"
-            value="B"
-            onChange={handleInputChange}
-          />
-        </label>
-        <label htmlFor="typeC">
-          C
-          <input
-            type="radio"
-            name="type"
-            id="typeC"
-            value="C"
-            onChange={handleInputChange}
-          />
-        </label>
-        <label htmlFor="typeD">
-          D
-          <input
-            type="radio"
-            name="type"
-            id="typeD"
-            value="D"
-            onChange={handleInputChange}
-          />
-        </label>
-      </div>
-      <div className={styles.containerInstalled}>
-        <span>Is installed?</span>
-        <input
-          type="checkbox"
-          name="isInstalled"
-          id="isInstalled"
-          checked={isInstalled}
-          onChange={(e) => {
-            handleIsInstalledToggle(e.currentTarget.checked);
-          }}
-        />
-      </div>
-      <div className={styles.containerBuilding}>
-        <label htmlFor="buildingId">Building</label>
-        <select
-          onChange={handleInputChange}
-          value={values.buildingId}
-          disabled={!isInstalled}
-          name="buildingId"
-          id="buildingId"
+    <GenericModal>
+      <>
+        <h2>{action} Boiler</h2>
+        {error && <ErrorContainer message={error} />}
+        <Form
+          onSubmit={handleFormSubmit}
+          initialValues={selectedBoiler || initialState}
         >
-          <option value="" disabled hidden></option>
+          {({ handleSubmit, submitting }) => (
+            <form onSubmit={handleSubmit}>
+              <p>Boilers type</p>
+              <div className={styles.specializationsContainter}>
+                <Field name="type" value="A" type="radio">
+                  {({ input }) => (
+                    <FormControlLabel
+                      control={<Radio {...input} />}
+                      label="A"
+                    />
+                  )}
+                </Field>
+                <Field name="type" value="B" type="radio">
+                  {({ input }) => (
+                    <FormControlLabel
+                      control={<Radio {...input} />}
+                      label="B"
+                    />
+                  )}
+                </Field>
+                <Field name="type" value="C" type="radio">
+                  {({ input }) => (
+                    <FormControlLabel
+                      control={<Radio {...input} />}
+                      label="C"
+                    />
+                  )}
+                </Field>
+                <Field name="type" value="D" type="radio">
+                  {({ input }) => (
+                    <FormControlLabel
+                      control={<Radio {...input} />}
+                      label="D"
+                    />
+                  )}
+                </Field>
+              </div>
+              <p>Is installed?</p>
+              <div className={styles.specializationsContainter}>
+                <Field name="isInstalled" value="" type="checkbox">
+                  {({ input }) => (
+                    <FormControlLabel control={<Checkbox {...input} />} />
+                  )}
+                </Field>
+              </div>
+              <div>
+                <Field name="maintenanceTimeMinutes" validate={required}>
+                  {({ input, meta }) => (
+                    <TextInput
+                      input={input}
+                      meta={meta}
+                      name="maintenanceTimeMinutes"
+                    />
+                  )}
+                </Field>
+              </div>
+              <p>BuildingId</p>
+              <div>
+                <Field name="buildingId" validate={required}>
+                  {({ input, meta }) => (
+                    <TextInput input={input} meta={meta} name="buildingId" />
+                  )}
+                </Field>
+              </div>
 
-          {buildings.map((x) => {
-            return (
-              <option key={x.id} value={x.id}>
-                {x.name}
-              </option>
-            );
-          })}
-        </select>
-      </div>
-      <input
-        type="text"
-        name="maintenanceTimeMinutes"
-        id="maintenanceTimeMinutes"
-        placeholder="Maintenance mime minutes"
-        value={values.maintenanceTimeMinutes}
-        onChange={handleInputChange}
-        autoComplete="off"
-      />
-      <div className={styles.actionsContainer}>
-        <Button
-          color="primary"
-          variant="contained"
-          disableRipple
-          type="submit"
-          loading={isLoading}
-          onClick={handleSubmit}
-        >
-          {action.toUpperCase()}
-        </Button>
-        <Button variant="outlined" type="button" onClick={handleCancel}>
-          Cancel
-        </Button>
-      </div>
-    </form>
+              <div className={styles.actionsContainer}>
+                <Button
+                  disabled={submitting}
+                  color="primary"
+                  variant="contained"
+                  disableRipple
+                  type="submit"
+                  loading={isLoading}
+                  onClick={handleSubmit}
+                >
+                  {actionInProgress}
+                </Button>
+                <Button variant="outlined" type="button" onClick={handleCancel}>
+                  Cancel
+                </Button>
+              </div>
+            </form>
+          )}
+        </Form>
+      </>
+    </GenericModal>
   );
 };
